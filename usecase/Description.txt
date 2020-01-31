@@ -1,0 +1,24 @@
+3 role - student, učitel, administrátor
+
+Administrátor bude moci editovat všechny tabulky.
+	- jeho práce taky bude vytvořit účty pro studenty a učitelé
+	- vytvořit studenty a učitele bude moci z JSONU/XML (import JSON)
+	- Bude moci exportovat studenty a učitele (export JSON/XML)
+
+Učitel bude mít list předmětů.
+	- Bude si moci vytvořit vlastní předmět, který vyučuje.
+	- V každém předmětu bude mít žáky a ty bude moci jednotlivně známkovat (více známek)
+	
+Student bude mít nějakou hlavní tabulku, kde budou jeho předměty a jednotlivé známky + průměr známek
+	- Žák si bude moci tuto tabulku vyexportovat do JSON (export JSON)
+	- Žák se taky bude moci přidat do předmětů
+	
+7 tabulek
+	- Student
+	- Učitel
+	- Administrátor
+	- Předmět
+	- Známky
+	- Učitel-Předměty
+	- Předmět-Studenti
+	
