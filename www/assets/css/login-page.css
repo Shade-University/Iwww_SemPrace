@@ -1,0 +1,121 @@
+body, html {
+    margin: 0px;
+    font-family: "Arial", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Nevyteèe mimo blok */
+
+.login-wrapper {
+    height: 100vh;
+    background-image: url("../img/login-background.jpg");
+    background-size: cover;
+}
+
+.login-wrapper .login-form-student {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* center */
+    width: 600px;
+    background-color: rgba(255, 255, 255, .6);
+    padding: 10px;
+    text-align: center;
+}
+
+.login-wrapper .login-form-student .role-choose {
+    width: 100%;
+}
+
+.role-choose .card {
+    width: 180px;
+    height: 240px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 30px;
+    -webkit-transition: background-color .5s;
+    transition: background-color .5s;
+    background-color: rgba(255, 255, 255, .0);
+    cursor: pointer;
+}
+
+.role-choose.hide {
+    display: none;
+}
+
+.role-choose .card:hover {
+    background-color: rgba(255, 255, 255, .8);
+}
+
+.role-choose .card .avatar {
+    height: 50px;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.role-choose .card .title {
+    margin-top: 46px;
+}
+
+form {
+    display: none;
+    position: relative;
+}
+
+form.show {
+    display: block;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+}
+
+input.invisible {
+    display: none;
+}
+
+.login {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-back {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    max-width: 120px;
+    margin-bottom: 34px;
+}
+
+.img-avatar {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    width: auto;
+    display: inline-block;
+    height: 40px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
