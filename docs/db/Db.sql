@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: db
--- Vytvořeno: Pon 03. úno 2020, 11:58
+-- Vytvořeno: Pon 03. úno 2020, 19:11
 -- Verze serveru: 8.0.19
 -- Verze PHP: 7.4.1
 
@@ -25,45 +25,55 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `Administrator`
---
-
-CREATE TABLE `Administrator` (
-  `id` int NOT NULL,
-  `username` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `password` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `description` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `date_created` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
--- --------------------------------------------------------
-
---
 -- Struktura tabulky `Grade`
 --
 
 CREATE TABLE `Grade` (
   `id` int NOT NULL,
-  `id_teacher` int NOT NULL,
-  `id_student` varchar(7) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `id_subject` int NOT NULL,
   `grade` varchar(1) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `date_evaluation` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_czech_ci;
+  `date_created` date NOT NULL,
+  `type` varchar(50) COLLATE utf8_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `Student`
+-- Struktura tabulky `Room`
 --
 
-CREATE TABLE `Student` (
-  `id` varchar(7) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `firstname` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `lastname` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `study_field` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `date_birth` date NOT NULL,
-  `password` varchar(50) COLLATE utf8_czech_ci NOT NULL
+CREATE TABLE `Room` (
+  `id` int NOT NULL,
+  `name` varchar(250) COLLATE utf8_czech_ci NOT NULL,
+  `capacity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `Schedule`
+--
+
+CREATE TABLE `Schedule` (
+  `id` int NOT NULL,
+  `day` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `lesson_start` date NOT NULL,
+  `lesson_end` date NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `id_subject` int NOT NULL,
+  `id_room` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `Schedule-User`
+--
+
+CREATE TABLE `Schedule-User` (
+  `id_schedule` int NOT NULL,
+  `id_user` int NOT NULL,
+  `id_grade` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
@@ -74,47 +84,23 @@ CREATE TABLE `Student` (
 
 CREATE TABLE `Subject` (
   `id` int NOT NULL,
-  `name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `shortcut` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `name` varchar(250) COLLATE utf8_czech_ci NOT NULL,
+  `description` varchar(500) COLLATE utf8_czech_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `Subject-Student`
+-- Struktura tabulky `User`
 --
 
-CREATE TABLE `Subject-Student` (
-  `id_subject` int NOT NULL,
-  `id_student` varchar(7) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
--- --------------------------------------------------------
-
---
--- Struktura tabulky `Teacher`
---
-
-CREATE TABLE `Teacher` (
+CREATE TABLE `User` (
   `id` int NOT NULL,
-  `firstname` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `lastname` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_czech_ci DEFAULT NULL,
-  `institute` varchar(250) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_czech_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_czech_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
--- --------------------------------------------------------
-
---
--- Struktura tabulky `Teacher-Subject`
---
-
-CREATE TABLE `Teacher-Subject` (
-  `id_teacher` int NOT NULL,
-  `id_subject` int NOT NULL
+  `firstname` varchar(250) COLLATE utf8_czech_ci NOT NULL,
+  `lastname` varchar(250) COLLATE utf8_czech_ci NOT NULL,
+  `email` varchar(250) COLLATE utf8_czech_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `role` varchar(50) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
@@ -122,25 +108,32 @@ CREATE TABLE `Teacher-Subject` (
 --
 
 --
--- Klíče pro tabulku `Administrator`
---
-ALTER TABLE `Administrator`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Klíče pro tabulku `Grade`
 --
 ALTER TABLE `Grade`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_grade_teacher` (`id_teacher`),
-  ADD KEY `fk_grade_student` (`id_student`),
-  ADD KEY `fk_grade_subject` (`id_subject`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Klíče pro tabulku `Student`
+-- Klíče pro tabulku `Room`
 --
-ALTER TABLE `Student`
+ALTER TABLE `Room`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Klíče pro tabulku `Schedule`
+--
+ALTER TABLE `Schedule`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_schedule_room` (`id_room`),
+  ADD KEY `fk_schedule_subject` (`id_subject`);
+
+--
+-- Klíče pro tabulku `Schedule-User`
+--
+ALTER TABLE `Schedule-User`
+  ADD KEY `fk_schedule_user` (`id_user`),
+  ADD KEY `fk_schedule_schedule` (`id_schedule`),
+  ADD KEY `fk_schedule_grade` (`id_grade`);
 
 --
 -- Klíče pro tabulku `Subject`
@@ -149,50 +142,29 @@ ALTER TABLE `Subject`
   ADD PRIMARY KEY (`id`);
 
 --
--- Klíče pro tabulku `Subject-Student`
+-- Klíče pro tabulku `User`
 --
-ALTER TABLE `Subject-Student`
-  ADD KEY `fk_subject_student_subject` (`id_subject`),
-  ADD KEY `fk_subject_student_student` (`id_student`);
-
---
--- Klíče pro tabulku `Teacher`
---
-ALTER TABLE `Teacher`
+ALTER TABLE `User`
   ADD PRIMARY KEY (`id`);
-
---
--- Klíče pro tabulku `Teacher-Subject`
---
-ALTER TABLE `Teacher-Subject`
-  ADD KEY `fk_teacher_subject_teacher` (`id_teacher`),
-  ADD KEY `fk_teacher_subject_subject` (`id_subject`);
 
 --
 -- Omezení pro exportované tabulky
 --
 
 --
--- Omezení pro tabulku `Grade`
+-- Omezení pro tabulku `Schedule`
 --
-ALTER TABLE `Grade`
-  ADD CONSTRAINT `fk_grade_student` FOREIGN KEY (`id_student`) REFERENCES `Student` (`id`),
-  ADD CONSTRAINT `fk_grade_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`),
-  ADD CONSTRAINT `fk_grade_teacher` FOREIGN KEY (`id_teacher`) REFERENCES `Teacher` (`id`);
+ALTER TABLE `Schedule`
+  ADD CONSTRAINT `fk_schedule_room` FOREIGN KEY (`id_room`) REFERENCES `Room` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_schedule_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Omezení pro tabulku `Subject-Student`
+-- Omezení pro tabulku `Schedule-User`
 --
-ALTER TABLE `Subject-Student`
-  ADD CONSTRAINT `fk_subject_student_student` FOREIGN KEY (`id_student`) REFERENCES `Student` (`id`),
-  ADD CONSTRAINT `fk_subject_student_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`);
-
---
--- Omezení pro tabulku `Teacher-Subject`
---
-ALTER TABLE `Teacher-Subject`
-  ADD CONSTRAINT `fk_teacher_subject_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`),
-  ADD CONSTRAINT `fk_teacher_subject_teacher` FOREIGN KEY (`id_teacher`) REFERENCES `Teacher` (`id`);
+ALTER TABLE `Schedule-User`
+  ADD CONSTRAINT `fk_schedule_grade` FOREIGN KEY (`id_grade`) REFERENCES `Grade` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_schedule_schedule` FOREIGN KEY (`id_schedule`) REFERENCES `Schedule` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_schedule_user` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

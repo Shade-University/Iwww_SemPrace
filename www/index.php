@@ -10,15 +10,15 @@
 
     <div class="login-form-student">
         <div class="role-choose">
-            <div class="card" data-role="Admin" data-login-type="Admin name">
+            <div class="card" data-role="Admin">
                 <img class="avatar" alt="admin" src="assets/img/admin.svg">
                 <h2 class="title">Admin</h2>
             </div>
-            <div class="card" data-role="Teacher" data-login-type="E-mail">
+            <div class="card" data-role="Teacher">
                 <img class="avatar" alt="teacher" src="assets/img/teacher.svg">
                 <h2 class="title">Teacher</h2>
             </div>
-            <div class="card" data-role="Student" data-login-type="Student ID">
+            <div class="card" data-role="Student">
                 <img class="avatar" alt="student" src="assets/img/student.svg">
                 <h2 class="title">Student</h2>
             </div>
@@ -28,7 +28,7 @@
             <button class="btn-back">Back</button>
             <img class="img-avatar" alt="teacher" src="assets/img/teacher.svg">
             <div class="container">
-                <label for="uname"><strong><span class="role-title"></span></strong></label>
+                <label for="uname"><strong>Username</strong></label>
                 <input type="text" placeholder="" id="uname" required>
                 <label for="psw"><strong>Password</strong></label>
                 <input type="password" placeholder="" id="psw" required>
