@@ -28,7 +28,7 @@
     if (file_exists($pathToFile)) {
         include $pathToFile;
     } else {
-        include "./pages/LoginPage.php";
+        include "./pages/" . MAIN_PAGE . ".php";
     }
     #Select right page
     ?>
