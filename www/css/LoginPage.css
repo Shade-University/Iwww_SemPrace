@@ -1,13 +1,11 @@
 body, html {
-    margin: 0px;
-    font-family: "Arial", sans-serif;
-}
+     margin: 0;
+     font-family: "Arial", sans-serif;
+ }
 
 * {
-    box-sizing: border-box; /* NevyteËe mimo blok */
+    box-sizing: border-box; /* Nevyteƒçe mimo blok */
 }
-
-
 
 .login-wrapper {
     height: 100vh;
@@ -94,23 +92,22 @@ input.invisible {
     width: 100%;
 }
 
-.btn-back {
+.btn-Back {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
-    margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100%;
     display: block;
     max-width: 120px;
-    margin-bottom: 34px;
+    margin: 8px 0 34px;
 }
 
 .img-avatar {
     position: absolute;
     right: 10px;
-    top: 0px;
+    top: 0;
     width: auto;
     display: inline-block;
     height: 40px;

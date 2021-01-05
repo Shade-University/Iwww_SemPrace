@@ -1,7 +1,7 @@
 3 role - student, učitel, administrátor
 
 Administrátor bude moci editovat všechny tabulky.
-	- jeho práce taky bude vytvořit účty pro studenty a učitelé
+	- jeho práce taky bude vytvořit účty pro studenty a učitele
 	- vytvořit studenty a učitele bude moci z JSONU/XML (import JSON) nebo manuálně
 	- Bude moci exportovat studenty a učitele (export JSON/XML)
 
@@ -13,7 +13,7 @@ Student bude mít hlavní tabulku, kde budou jeho předměty a jednotlivé znám
 	- Žák si bude moci tuto tabulku vyexportovat do JSON (export JSON)
 	- Žák se taky bude moci přidat do předmětů
 	
-7 tabulek
+7 tabulek v DB (viz dokumentace)
 	- Student
 	- Učitel
 	- Administrátor
@@ -21,4 +21,36 @@ Student bude mít hlavní tabulku, kde budou jeho předměty a jednotlivé znám
 	- Známky
 	- Učitel-Předměty
 	- Předmět-Studenti
+
+GUI:
+
+LoginPage (/):
+    Obsahuje hlavní okno uprostřed stránky kde si aktér zvolí roli (Admin, Teacher, Student)
+    Po zvolení role se otevře formulář se jménem a heslem pro přihlášení.
+
+AdministrationPage (x):
+    Levé menu: Users administration, Import, Export, CRUD
+
+    Import: pouze otevře dialogové okno pro výběr xml/json dokumentu
+    Export: pouze otevře dialogové okno pro uložení všech uživatelů
+    Users administration:
+     bude obsahovat tabulku kde budou vypsáni všichni uživatelé z db. U uživatelů bude možnost je odstranit a upravit je.
+     Upravení otevře formulář s předvyplněnýma údajema o něm a bude zde tlačítko Edit nebo Back
+     Pod tabulkou se bude nacházet formulář pro přidání uživatele
+    CRUD: Bude obsahovat dropdown menu ze kterého si administrátor vybere tabulku z db.
+    Data z db se vypíšou pod dropdown do tabulky podobné jako u uživatelů (bude zde možnost odstranit/upravit se stejnou funkcí + pod bude formulář na přidání)
+
+StudentPage:
+    My subjects vypíše tabulku s jeho přihlášenýma předmětama + v sobě budou mít udělené známky z toho předmětu + průměr známek + tlačítko export známek
+    Other subjects vypíše všechny předměty z db a půjdou zakliknout jako zapsání do nich (modální okno na potvrzení zapsání)
+
+TeachersPage:
+    Create subject bude formulář na vytvoření předmětu
+    My subjects vypíše tabulku s jeho předměty. Bude zde možnost rozkliknout předmět a zobrazit studenty v něm.  Studentům lze udělit známku
+
+
+
+
+
+
 	

@@ -1,45 +1,37 @@
+<?php
+    define("MAIN_PAGE","LoginPage"); # define default page
+?>
+
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Tomáš Vondra">
+    <meta name="description" content="School system">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School system</title>
-    <meta charset="utf-8">
-
-    <link rel="stylesheet" href="assets/css/login-page.css"/>
+    <?php
+    $cssFile = "./css/" . $_GET["page"] . ".css";
+    if (file_exists($cssFile)) {
+        echo "<link rel=\"stylesheet\" href=\"$cssFile\"/>";
+    } else {
+        echo "<link rel=\"stylesheet\" href=\"../css/" . MAIN_PAGE . ".css\"/>";
+    }
+    #Select right css file to page
+    ?>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
 </head>
+
 <body>
-<div class="login-wrapper">
-
-    <div class="login-form-student">
-        <div class="role-choose">
-            <div class="card" data-role="Admin">
-                <img class="avatar" alt="admin" src="assets/img/admin.svg">
-                <h2 class="title">Admin</h2>
-            </div>
-            <div class="card" data-role="Teacher">
-                <img class="avatar" alt="teacher" src="assets/img/teacher.svg">
-                <h2 class="title">Teacher</h2>
-            </div>
-            <div class="card" data-role="Student">
-                <img class="avatar" alt="student" src="assets/img/student.svg">
-                <h2 class="title">Student</h2>
-            </div>
-        </div>
-
-        <form class="form-show" action="TODO" method="post">
-            <button class="btn-back">Back</button>
-            <img class="img-avatar" alt="teacher" src="assets/img/teacher.svg">
-            <div class="container">
-                <label for="uname"><strong>Username</strong></label>
-                <input type="text" placeholder="" id="uname" required>
-                <label for="psw"><strong>Password</strong></label>
-                <input type="password" placeholder="" id="psw" required>
-                <input class="invisible role-var" type="text" value="">
-                <button class="login" type="submit">Login</button>
-            </div>
-        </form>
-    </div>
-
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/index.js"></script>
+<div id="content">
+    <?php
+    $pathToFile = "./pages/" . $_GET["page"] . ".php";
+    if (file_exists($pathToFile)) {
+        include $pathToFile;
+    } else {
+        include "./pages/LoginPage.php";
+    }
+    #Select right page
+    ?>
 </div>
 </body>
 </html>

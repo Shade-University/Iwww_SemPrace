@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Grade` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `grade` varchar(1) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
   `date_created` date NOT NULL,
   `type` varchar(50) COLLATE utf8_czech_ci NOT NULL
@@ -42,7 +42,7 @@ CREATE TABLE `Grade` (
 --
 
 CREATE TABLE `Room` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(250) COLLATE utf8_czech_ci NOT NULL,
   `capacity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
@@ -54,7 +54,7 @@ CREATE TABLE `Room` (
 --
 
 CREATE TABLE `Schedule` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `day` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `lesson_start` date NOT NULL,
   `lesson_end` date NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `Schedule-User` (
 --
 
 CREATE TABLE `Subject` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(250) COLLATE utf8_czech_ci NOT NULL,
   `description` varchar(500) COLLATE utf8_czech_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
@@ -95,7 +95,7 @@ CREATE TABLE `Subject` (
 --
 
 CREATE TABLE `User` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `firstname` varchar(250) COLLATE utf8_czech_ci NOT NULL,
   `lastname` varchar(250) COLLATE utf8_czech_ci NOT NULL,
   `email` varchar(250) COLLATE utf8_czech_ci NOT NULL,
@@ -106,24 +106,10 @@ CREATE TABLE `User` (
 --
 -- Klíče pro exportované tabulky
 --
-
---
--- Klíče pro tabulku `Grade`
---
-ALTER TABLE `Grade`
-  ADD PRIMARY KEY (`id`);
-
---
--- Klíče pro tabulku `Room`
---
-ALTER TABLE `Room`
-  ADD PRIMARY KEY (`id`);
-
 --
 -- Klíče pro tabulku `Schedule`
 --
 ALTER TABLE `Schedule`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `fk_schedule_room` (`id_room`),
   ADD KEY `fk_schedule_subject` (`id_subject`);
 
@@ -134,18 +120,6 @@ ALTER TABLE `Schedule-User`
   ADD KEY `fk_schedule_user` (`id_user`),
   ADD KEY `fk_schedule_schedule` (`id_schedule`),
   ADD KEY `fk_schedule_grade` (`id_grade`);
-
---
--- Klíče pro tabulku `Subject`
---
-ALTER TABLE `Subject`
-  ADD PRIMARY KEY (`id`);
-
---
--- Klíče pro tabulku `User`
---
-ALTER TABLE `User`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Omezení pro exportované tabulky
