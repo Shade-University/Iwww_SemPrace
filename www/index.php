@@ -1,11 +1,12 @@
 <?php
+    session_start();
     define("MAIN_PAGE","LoginPage"); # define default page
+    ob_start(); # To fix some weird redirect error
 ?>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="author" content="Tomáš Vondra">
+    <meta name="author" content="Tomas Vondra">
     <meta name="description" content="School system">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School system</title>

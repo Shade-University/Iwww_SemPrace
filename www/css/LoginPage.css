@@ -119,20 +119,16 @@
         max-width: 100%;
     }
     .login-page .login-form .col:nth-child(1) {
-        -webkit-order: 1;
         order: 1;
         padding-bottom: 30px;
     }
     .login-page .login-form .col:nth-child(2) {
-        -webkit-order: 2;
         order: 3;
     }
     .login-page .login-form .col:nth-child(3) {
-        -webkit-order: 4;
         order: 4;
     }
     .login-page .login-form .col:nth-child(4) {
-        -webkit-order: 3;
         order: 3;
     }
     .login-page .input-group input {
@@ -140,6 +136,9 @@
     }
     .login-page .custom-checkbox {
         margin-top: 36px;
+    }
+    .login-page input[type=checkbox] {
+        margin-top:38px;
     }
     .login-page .submit-btn {
         font-size: 16px;
