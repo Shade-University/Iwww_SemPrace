@@ -1,7 +1,5 @@
 <?php
-$mapping = array("admin" => "AdministrationPage",
-                "teacher"=> "TeacherPage",
-                "student" =>"StudentPage");
+
 
 require_once './controller/LoginPageController.php';
 
@@ -10,16 +8,8 @@ $loginPageController = new LoginPageController();
 
 $wrong = false;
 if (isset($_POST['login'])) {
-    if (!empty($_POST['username']) && !empty($_POST['password'])) {
-        $user = $loginPageController->login($_POST['username'], $_POST['password'], $_POST['remember']);
-        if ($user) {
-            header('Location: index.php?page=' . $mapping[$user['role']]);
-        } else {
-            $wrong = true;
-        }
-    } else {
-        $wrong = true;
-    }
+        $loginPageController->login($_POST['username'], $_POST['password'], $_POST['remember']);
+
 }
 ?>
 
@@ -40,13 +30,13 @@ if (isset($_POST['login'])) {
                 <div class="input-group">
                     <input type="text" name="username" placeholder="user@domain.cz"/>
                 </div>
-                <div class="input-group <? if ($wrong) echo "wrong" //Improvement - Error message?>">
+                <div class="input-group">
                     <input type="password" name="password" placeholder="Password"/>
-                    <span class="msg">Wrong username or password</span>
+                    <span class="msg"><? $loginPageController->renderError(); ?></span>
                 </div>
             </div>
             <div class="col">
-                <input id="remember" name="remember" type="checkbox" disabled checked="checked">
+                <input id="remember" name="remember" disabled type="checkbox" checked="checked">
                 <label for="remember" class="custom-checkbox">Remember me</label>
             </div>
             <!-- Improvement - Captcha-->

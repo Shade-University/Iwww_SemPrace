@@ -78,10 +78,8 @@
     font-size: 18px;
     color: #ffffff;
 }
-.login-page .input-group .msg {
-    display: none;
-}
-.login-page .input-group.wrong .msg {
+
+.login-page .msg {
     display: block;
     color: #c0392b;
     font-weight: bold;
