@@ -1,33 +1,33 @@
-<div class="login-wrapper">
-
-    <div class="login-form-student">
-        <div class="role-choose">
-            <div class="card" data-role="Admin">
-                <img class="avatar" alt="admin" src="../img/admin.svg">
-                <h2 class="title">Admin</h2>
+<div class="login-page">
+    <form class="login-form">
+        <div class="flex-box">
+            <div class="col">
+                <div class="radio-btn-group">
+                    <input id="admin-role" type="radio" checked="checked" name="role" value="admin">
+                    <label for="admin-role" class="custom-radio">Administrator</label><br>
+                    <input id="teacher-role" type="radio" name="role" value="teacher">
+                    <label for="teacher-role" class="custom-radio">Teacher</label><br>
+                    <input id="student-role" type="radio" name="role" value="student">
+                    <label for="student-role" class="custom-radio">Student</label>
+                </div>
             </div>
-            <div class="card" data-role="Teacher">
-                <img class="avatar" alt="teacher" src="../img/teacher.svg">
-                <h2 class="title">Teacher</h2>
+            <div class="col">
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="Username"/>
+                </div>
+                <div class="input-group wrong">
+                    <input type="password" name="password" placeholder="Password"/>
+                    <span class="msg">Wrong username or password</span>
+                </div>
             </div>
-            <div class="card" data-role="Student">
-                <img class="avatar" alt="student" src="../img/student.svg">
-                <h2 class="title">Student</h2>
+            <div class="col">
+                <input id="remember" type="checkbox" checked="checked">
+                <label for="remember" class="custom-checkbox">Remember me</label>
+            </div>
+            <div class="col">
+                <button class="submit-btn"><span>log in</span></button>
             </div>
         </div>
-
-        <form class="form-show" action="../classes/login.php" method="post">
-            <button class="btn-back">Back</button>
-            <img class="img-avatar" alt="teacher" src="../img/teacher.svg">
-            <div class="container">
-                <label for="username"><strong>Username</strong></label>
-                <input type="text" placeholder="" id="username" required>
-                <label for="password"><strong>Password</strong></label>
-                <input type="password" placeholder="" id="password" required>
-                <input class="invisible role-var" type="text" id="role" value="">
-                <button class="login" type="submit">Login</button>
-            </div>
-        </form>
-    </div>
-
-    <script type="text/javascript" src="../js/LoginPage.js"></script>
+    </form>
+</div>
+</html>

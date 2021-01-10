@@ -1,118 +1,152 @@
-body, html {
-     margin: 0;
-     font-family: "Arial", sans-serif;
- }
-
-* {
-    box-sizing: border-box; /* Nevyteče mimo blok */
+.login-page {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    background: #ffffff;
+    min-width: 320px;
+    width: 100%;
+    min-height: 100vh;
 }
-
-.login-wrapper {
-    height: 100vh;
-    background-image: url("../img/login-background.jpg");
-    background-size: cover;
-}
-
-.login-wrapper .login-form-student {
+.login-page {
     position: relative;
+    background: linear-gradient(to bottom right, #27AE60, #2980B9);
+}
+.login-page .login-form {
+    position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%); /* center */
+    transform: translate(-50%, -50%);
+    /* Zarovnej na střed */
+    padding: 32px 32px;
+    background-color: rgba(255, 255, 255, 0.3);
     width: 600px;
-    background-color: rgba(255, 255, 255, .6);
-    padding: 10px;
-    text-align: center;
+    max-width: 90%;
 }
-
-.login-wrapper .login-form-student .role-choose {
-    width: 100%;
-}
-
-.role-choose .card {
-    width: 180px;
-    height: 240px;
+.login-page .login-form .col:nth-child(odd) {
+    flex: 0 0 40%;
+    max-width: 40%;
+} /* Sekce vlevo pouze 40% */
+.login-page .login-form .col:nth-child(even) {
+    flex: 0 0 60%;
+    max-width: 60%;
+} /*Sekce vpravo zbytek 60% */
+.login-page .custom-radio {
     display: inline-block;
-    vertical-align: middle;
-    padding-top: 30px;
-    -webkit-transition: background-color .5s;
-    transition: background-color .5s;
-    background-color: rgba(255, 255, 255, .0);
-    cursor: pointer;
-}
-
-.role-choose.hide {
-    display: none;
-}
-
-.role-choose .card:hover {
-    background-color: rgba(255, 255, 255, .8);
-}
-
-.role-choose .card .avatar {
-    height: 50px;
-    width: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-}
-
-.role-choose .card .title {
-    margin-top: 46px;
-}
-
-form {
-    display: none;
     position: relative;
+    padding-left: 35px;
+    padding-top: 4px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 16px;
+}
+.login-page .custom-radio:not(:last-child) { /*kromě posledního */
+    margin-bottom: 20px;
+}
+.login-page input[type=radio] {
+    position: absolute;
+    cursor: pointer;
 }
 
-form.show {
+.login-page .custom-checkbox {
     display: block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 14px;
+    margin-top: 70px;
+}
+.login-page input[type=checkbox] {
+    position: absolute;
+    cursor: pointer;
+    margin-top: 72px;
 }
 
-input[type=text], input[type=password] {
+.login-page input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+.login-page .input-group:not(:last-child) {
+    margin-bottom: 16px;
+}
+.login-page .input-group input {
+    padding: 16px 26px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #ffffff;
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
+    background: rgba(0, 0, 0, 0);
+    font-size: 18px;
+    color: #ffffff;
 }
-
-input.invisible {
+.login-page .input-group .msg {
     display: none;
 }
-
-.login {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-.btn-Back {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
+.login-page .input-group.wrong .msg {
     display: block;
-    max-width: 120px;
-    margin: 8px 0 34px;
+    color: #c0392b;
+    font-weight: bold;
+    margin-top:10px;
+}
+.login-page .submit-btn {
+    font-size: 18px;
+    color: #ffffff;
+    padding: 10px 26px;
+    width: 216px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0);
+    float: right;
+    margin-top: 40px;
+    position: relative;
+    transition: 0.5s background-color;
+}
+.login-page .submit-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.login-page .submit-btn:hover:after {
+    width: 100%;
+    opacity: 1;
 }
 
-.img-avatar {
-    position: absolute;
-    right: 10px;
-    top: 0;
-    width: auto;
-    display: inline-block;
-    height: 40px;
-}
-
-button:hover {
-    opacity: 0.8;
+@media screen and (max-width: 600px) {
+    .login-page .login-form {
+        padding: 20px 20px;
+    }
+    .login-page .login-form .col:nth-child(even), .login-page .login-form .col:nth-child(odd) {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .login-page .login-form .col:nth-child(1) {
+        -webkit-order: 1;
+        order: 1;
+        padding-bottom: 30px;
+    }
+    .login-page .login-form .col:nth-child(2) {
+        -webkit-order: 2;
+        order: 3;
+    }
+    .login-page .login-form .col:nth-child(3) {
+        -webkit-order: 4;
+        order: 4;
+    }
+    .login-page .login-form .col:nth-child(4) {
+        -webkit-order: 3;
+        order: 3;
+    }
+    .login-page .input-group input {
+        font-size: 16px;
+    }
+    .login-page .custom-checkbox {
+        margin-top: 36px;
+    }
+    .login-page .submit-btn {
+        font-size: 16px;
+        width: 100%;
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
