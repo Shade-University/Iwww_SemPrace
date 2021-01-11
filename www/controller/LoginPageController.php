@@ -30,8 +30,12 @@ class LoginPageController
 
         if ($_POST['remember'] == "on") {
             $this->setRememberMe($dbUser);
+        } else {
+            $this->_userDao->updateRememberMe("", $dbUser['id']);
+            setcookie("remember", "", time() - 3600);
         }
 
+        $this->setSession($dbUser);
         header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
     }
 
@@ -40,14 +44,33 @@ class LoginPageController
         echo $this->_msg;
     }
 
+    public function checkByRememberCookie()
+    {
+        if ($_COOKIE['remember']) {
+            $dbUser = $this->_userDao->getByRememberCookie($_COOKIE['remember']);
+
+            if ($dbUser) {
+                $this->setSession($dbUser);
+                header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
+            }
+        }
+    }
+
     private function setRememberMe($dbUser)
     {
-        $cookiehash = md5(sha1($dbUser['email'] . $_SERVER['REMOTE_ADDR']));
+        $cookiehash = md5(sha1($dbUser['email'] . $_SERVER['REMOTE_ADDR'])); //something generated
         $params = session_get_cookie_params();
         setcookie("remember",
             $cookiehash,
-            time() + 60*60*24*30,
+            time() + 60 * 60 * 24 * 30,
             $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
-        //Too hard to do. Probably the best way is generate "random" hash which should be saved to database
+
+        $this->_userDao->updateRememberMe($cookiehash, $dbUser['id']);
+    }
+
+    private function setSession($dbUser)
+    {
+        $_SESSION['fullname'] = $dbUser['firstname'] . " " . $dbUser['lastname'];
+        $_SESSION['role'] = $dbUser['role'];
     }
 }

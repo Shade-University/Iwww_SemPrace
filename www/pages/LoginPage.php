@@ -4,7 +4,7 @@
 require_once './controller/LoginPageController.php';
 
 $loginPageController = new LoginPageController();
-
+$loginPageController->checkByRememberCookie();
 
 $wrong = false;
 if (isset($_POST['login'])) {
@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
                 </div>
             </div>
             <div class="col">
-                <input id="remember" name="remember" disabled type="checkbox" checked="checked">
+                <input id="remember" name="remember" type="checkbox" checked="checked">
                 <label for="remember" class="custom-checkbox">Remember me</label>
             </div>
             <!-- Improvement - Captcha-->

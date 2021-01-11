@@ -140,6 +140,10 @@ ALTER TABLE `Schedule-User`
     ADD CONSTRAINT `fk_schedule_schedule` FOREIGN KEY (`id_schedule`) REFERENCES `Schedule` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
     ADD CONSTRAINT `fk_schedule_user` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+alter table User
+    add rememberme_hash varchar(250) null;
+
+
 insert into user (firstname, lastname, email, password, role) VALUES ("Tomáš", "Vondra", "admin", "admin", "admin");
 
 COMMIT;
