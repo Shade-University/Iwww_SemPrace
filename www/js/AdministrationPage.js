@@ -1,23 +1,65 @@
-$(document).ready(function () {
+$(document).ready(function(){
+    /* Overview page - toggle nav menu item */
+    /*--------------------------------------*/
+    $(".op-body .nav-menu a").click(function(e){
+        e.preventDefault();
 
-    $(".list a").click(function() {
-        $( this ).parent().find(".selected").removeClass( "selected" );
-        $( this ).addClass("selected")
+        $(".op-body .nav-menu a").removeClass("active");
+        $(this).addClass("active");
     });
 
-    $(".list-item-users").click(function () {
-        $( ".container").find(".show").removeClass( "show" ).addClass("hide");
-        $(".users").removeClass("hide").addClass("show");
+    /* Delete user from table functions */
+    /*----------------------------------*/
+    $(document).on( 'click', '*[data-modal-anchor]', function(){
+        $(".modal-window").removeClass("show");
+        $(".modal-window[data-modal='"+$(this).data("modal-anchor")+"']").addClass("show");
     });
 
-    $(".list-item-create").click(function () {
-        $( ".container").find(".show").removeClass( "show" ).addClass("hide");
-        $(".create-user").removeClass("hide").addClass("show");
+    /* Hide modal widow */
+    /*---------------------------------*/
+    $(document).on( 'click', '.hide-modal', function(){
+        $(".modal-window").removeClass("show");
+        window.location = window.location.search.split('&')[0]; //Remove parameters from url (editUser)
     });
 
-    $(".list-item-import").click(function () {
-        $( ".container").find(".show").removeClass( "show" ).addClass("hide");
-        $(".import-users").removeClass("hide").addClass("show");
+    //hide on click anywhere but on form in modal window (if you click on white field)
+    $(document).on( 'click', '.layer-hide', function(){
+        $(this).parent().removeClass("show");
+        window.location = window.location.search.split('&')[0]; //Remove parameters from url (editUser)
     });
 
+    /* Input FILE trigger */
+    /*---------------------------------*/
+    $(document).on( 'click', '.import-data', function(e){
+        e.preventDefault();
+    });
+
+    /* Toggle mobile nav icon & nav menu classes */
+    $(".nav-icon").click(function(){
+        $(this).parent().toggleClass("active");
+        $(this).toggleClass("active");
+        $(".nav-col").toggleClass("active");
+    });
 });
+
+function searchUsers() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("seachBar");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("userTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}

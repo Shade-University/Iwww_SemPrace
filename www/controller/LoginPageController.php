@@ -70,6 +70,7 @@ class LoginPageController
 
     private function setSession($dbUser)
     {
+        $_SESSION['email'] = $dbUser['email'];
         $_SESSION['fullname'] = $dbUser['firstname'] . " " . $dbUser['lastname'];
         $_SESSION['role'] = $dbUser['role'];
     }

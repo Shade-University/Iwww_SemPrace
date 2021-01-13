@@ -36,4 +36,56 @@ class UserDaoImpl implements UserDao
         $stmt->execute();
         return $stmt->fetch();
     }
+
+    function getAllUsers()
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM User");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    function insertUser($firstname, $lastname, $email, $password, $role)
+    {
+        $stmt = $this->_db->prepare("INSERT INTO User(firstname, lastname, email, password, role)
+         VALUES(:firstname, :lastname, :email, :password, :role)");
+        $stmt->bindParam(":firstname", $firstname);
+        $stmt->bindParam(":lastname", $lastname);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":password", $password);
+        $stmt->bindParam(":role", $role);
+        $stmt->execute();
+    }
+
+    public function deleteUser($userId)
+    {
+        $stmt = $this->_db->prepare("DELETE FROM User WHERE id = :id");
+        $stmt->bindParam(":id", $userId);
+        $stmt->execute();
+    }
+
+    function updateUser($id, $firstname, $lastname, $email, $password, $role)
+    {
+        $stmt = $this->_db->prepare("UPDATE User SET
+                firstname = :firstname,
+                lastname = :lastname,
+                email = :email,
+                password = :password,
+                role = :role WHERE id = :id");
+
+        $stmt->bindParam(":firstname", $firstname);
+        $stmt->bindParam(":lastname", $lastname);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":password", $password);
+        $stmt->bindParam(":role", $role);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+    }
+
+    public function geUserById($userId)
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM User WHERE id = :id");
+        $stmt->bindParam(":id", $userId);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }

@@ -3,13 +3,12 @@
 
 require_once './controller/LoginPageController.php';
 
-$loginPageController = new LoginPageController();
-$loginPageController->checkByRememberCookie();
+$controller = new LoginPageController();
+$controller->checkByRememberCookie();
 
 $wrong = false;
 if (isset($_POST['login'])) {
-        $loginPageController->login($_POST['username'], $_POST['password'], $_POST['remember']);
-
+        $controller->login($_POST['username'], $_POST['password'], $_POST['remember']);
 }
 ?>
 
@@ -32,7 +31,7 @@ if (isset($_POST['login'])) {
                 </div>
                 <div class="input-group">
                     <input type="password" name="password" placeholder="Password"/>
-                    <span class="msg"><? $loginPageController->renderError(); ?></span>
+                    <span class="msg"><? $controller->renderError(); ?></span>
                 </div>
             </div>
             <div class="col">
