@@ -1,24 +1,16 @@
 <?php
+define("CRUD_MAIN_PAGE","Users"); # define default page
 require_once './controller/AdministrationPageController.php';
+
     $controller = new AdministrationPageController();
 
     if(!$_SESSION['email']) {
         header("Location: ./index.php");
     }
 
-    if($_GET['deleteUser']) {
-        $controller->deleteUser($_GET['deleteUser']);
-        header("Location: index.php?page=AdministrationPage"); //To remove get parameter
-    } elseif ($_GET['editUser']) {
-        $editUser = $controller->getUser($_GET['editUser']); //Parameter removed in javascript on modal close
+    if(isset($_FILES['importFile'])) {
+        $controller->importFile($_FILES['importFile']);
     }
-
-    if($_POST['action'] == "addUser") {
-        $controller->createUser($_POST);
-    } elseif($_POST['action'] == "editUser") {
-        $controller->updateUser($_POST);
-    }
-
 ?>
 
 <div class="overview-page admin-page">
@@ -34,19 +26,23 @@ require_once './controller/AdministrationPageController.php';
             </div>
 
             <ul class="nav-menu">
-                <li><a href="#" class="nav-item active" data-page-anchor="users"><span>Users</span></a></li>
-                <li><a href="#" class="nav-item import-data"><span>Import</span></a></li>
-                <li><a href="#" class="nav-item"><span>Export</span></a></li>
+                <li><a href="?page=AdministrationPage" class="nav-item <? if(!$_GET['crud'] || $_GET['crud'] == "Users") echo "active" ?>"><span>Users</span></a></li>
+                <li>
+                    <form id="importForm" method="post" enctype="multipart/form-data">
+                        <input id="file-input" type="file" onchange="document.getElementById('importForm').submit();" name="importFile" accept=".csv" style="display: none;" />
+                        <a type="submit" class="nav-item import-data" onclick="document.getElementById('file-input').click();"><span>Import users</span></a>
+                    </form>
+
+                </li>
+                <li><a href="exportFile.php" class="nav-item"><span>Export users</span></a></li>
                 <li class="sub-menu">
-                    <a href="#" class="nav-item"><span>CRUD</span></a>
+                    <a href="#" class="nav-item <? if($_GET['crud'] && $_GET['crud'] != "Users") echo "active" ?>"><span>CRUD</span></a>
                     <div class="sm-box">
-                        <a href="#">Student</a>
-                        <a href="#">Učitel</a>
-                        <a href="#">Administrátor</a>
-                        <a href="#">Předmět</a>
-                        <a href="#">Známky</a>
-                        <a href="#">Učitel-Předměty</a>
-                        <a href="#">Předmět-Studenti</a>
+                        <a href="?page=AdministrationPage&crud=Subjects">Subjects</a>
+                        <a href="?page=AdministrationPage&crud=Rooms">Rooms</a>
+                        <a href="?page=AdministrationPage&crud=Grades">Grades</a>
+                        <a href="?page=AdministrationPage&crud=Schedules">Schedules</a>
+                        <a href="?page=AdministrationPage&crud=ScheduleUser">Schedule-User</a>
                     </div>
                 </li>
             </ul>
@@ -55,111 +51,19 @@ require_once './controller/AdministrationPageController.php';
             <div class="nav-icon-wrap">
                 <div class="nav-icon"><div></div><div></div></div>
             </div>
-            <div class="card" data-page="users">
-                <h2>User</h2>
-                <div class="control-row">
-                    <div class="search-form-wrap">
-                        <form class="search-form flex-box">
-                            <div class="input-box">
-                                <input id="seachBar" type="search" placeholder="Search" name="Search" onkeyup="searchUsers()">
-                            </div>
-                            <div class="search-btn">
-                                <button><img src="./img/search.svg" alt="Search icon"></button>
-                            </div>
-                        </form>
-                    </div>
-                    <button class="btn-add-user" data-modal-anchor="create-user">
-                        <span class="icon"></span>
-                        <span>Create new user</span>
-                    </button>
-                </div>
-                <div class="table-wrap">
-                    <? $controller->createUserTable(); ?>
-                </div>
-            </div>
+
+            <?php
+            $pathToFile = "./pages/CRUD/" . $_GET["crud"] . ".php";
+            if (file_exists($pathToFile)) {
+                include $pathToFile;
+            } else {
+                include "./pages/CRUD/" . CRUD_MAIN_PAGE . ".php";
+            }
+            #Select right page
+            ?>
         </div>
     </section>
 
-    <div class="modal-window <? if($_GET['editUser']) echo 'show';?>">
-        <div class="layer-hide"></div>
-        <div class="modal-box edit-add-user">
-            <p>Edit user: <strong class="edit-user-id"><? echo $editUser['id'] ?></strong></p>
-            <form id="editUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage">
-                <input type="hidden" name="id" value="<? echo $editUser['id'] ?>">
-                <div class="input-box">
-                    <label for="First name">First name *</label>
-                    <input type="text" name="firstname" placeholder="First name *" value="<? echo $editUser['firstname'] ?>">
-                </div>
-                <div class="input-box">
-                    <label for="Last name">Last name *</label>
-                    <input type="text" name="lastname" placeholder="Last name *" value="<? echo $editUser['lastname'] ?>">
-                </div>
-                <div class="input-box">
-                    <label for="Email">Email *</label>
-                    <input type="email" name="email" placeholder="Email *" value="<? echo $editUser['email'] ?>">
-                </div>
-                 <div class="input-box">
-                    <label for="password">Password *</label>
-                    <input type="text" name="password" placeholder="Password *" value="<? echo $editUser['password'] ?>">
-                </div>
-                <div class="input-box">
-                    <label for="role">Role</label>
-                    <select name="role">
-                        <option value="admin" <? if($editUser['role'] == "admin") echo 'selected'; ?>>Administrator</option>
-                        <option value="teacher" <? if($editUser['role'] == "teacher") echo 'selected'; ?>>Teacher</option>
-                        <option value="student" <? if($editUser['role'] == "student") echo 'selected'; ?>>Student</option>
-                    </select>
-                </div>
-                <input type="hidden" value="editUser" name="action">
-                <div class="input-box ib-placeholder"></div>
-                <div class="input-box">
-                    <button type="submit" form="editUserForm" class="hide-modal">Save</button>
-                </div>
-                <div class="input-box">
-                    <button type="reset" class="hide-modal">Storno</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="modal-window">
-        <div class="layer-hide"></div>
-        <div class="modal-box edit-add-user">
-            <p>Create user</p>
-            <form id="createUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage">
-                <div class="input-box">
-                    <label for="First name">First name *</label>
-                    <input type="text" name="firstname" placeholder="First name *" required>
-                </div>
-                <div class="input-box">
-                    <label for="Last name">Last name *</label>
-                    <input type="text" name="lastname" placeholder="Last name *" required>
-                </div>
-                <div class="input-box">
-                    <label for="Email">Email *</label>
-                    <input type="email" name="email" placeholder="Email *" required>
-                </div>
-                <div class="input-box">
-                    <label for="password">Password</label>
-                    <input type="text" name="password" placeholder="Password" required>
-                </div>
-                <div class="input-box">
-                    <label for="role">Role</label>
-                    <select name="role">
-                        <option value="admin">Administrator</option>
-                        <option value="prof">Professor</option>
-                        <option value="student">Student</option>
-                    </select>
-                </div>
-                <div class="input-box ib-placeholder"></div>
-                <input type="hidden" name="action" value="addUser">
-                <div class="input-box">
-                    <button type="submit" form="createUserForm">Create</button>
-                </div>
-                <div class="input-box">
-                    <button type="reset" form="createUserForm" class="hide-modal">Storno</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 </div>
 <script type="text/javascript" src="./js/AdministrationPage.js"></script>

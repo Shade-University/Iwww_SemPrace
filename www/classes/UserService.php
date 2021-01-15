@@ -1,6 +1,5 @@
 <?php
 
-
 class UserService
 {
     protected $_userDao;

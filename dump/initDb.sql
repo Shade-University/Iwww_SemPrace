@@ -1,9 +1,10 @@
+-- TODO Re-generate + db structure image
 -- phpMyAdmin SQL Dump
 -- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Poèítaè: db
--- Vytvoøeno: Pon 03. úno 2020, 19:11
+-- Poï¿½ï¿½taï¿½: db
+-- Vytvoï¿½eno: Pon 03. ï¿½no 2020, 19:11
 -- Verze serveru: 8.0.19
 -- Verze PHP: 7.4.1
 
@@ -19,7 +20,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `Db`
+-- Databï¿½ze: `Db`
 --
 
 -- --------------------------------------------------------
@@ -56,10 +57,8 @@ CREATE TABLE `Room` (
 CREATE TABLE `Schedule` (
                             `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                             `day` varchar(50) COLLATE utf8_czech_ci NOT NULL,
-    `lesson_start` date NOT NULL,
-    `lesson_end` date NOT NULL,
-    `start_date` date NOT NULL,
-    `end_date` date NOT NULL,
+    `lesson_start` time NOT NULL,
+    `lesson_end` time NOT NULL,
     `id_subject` int NOT NULL,
     `id_room` int NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
@@ -104,17 +103,17 @@ CREATE TABLE `User` (
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Klíèe pro exportované tabulky
+-- Klï¿½ï¿½e pro exportovanï¿½ tabulky
 --
 --
--- Klíèe pro tabulku `Schedule`
+-- Klï¿½ï¿½e proï¿½tabulku `Schedule`
 --
 ALTER TABLE `Schedule`
     ADD KEY `fk_schedule_room` (`id_room`),
     ADD KEY `fk_schedule_subject` (`id_subject`);
 
 --
--- Klíèe pro tabulku `Schedule-User`
+-- Klï¿½ï¿½e proï¿½tabulku `Schedule-User`
 --
 ALTER TABLE `Schedule-User`
     ADD KEY `fk_schedule_user` (`id_user`),
@@ -122,29 +121,29 @@ ALTER TABLE `Schedule-User`
     ADD KEY `fk_schedule_grade` (`id_grade`);
 
 --
--- Omezení pro exportované tabulky
+-- Omezenï¿½ pro exportovanï¿½ tabulky
 --
 
 --
--- Omezení pro tabulku `Schedule`
+-- Omezenï¿½ pro tabulku `Schedule`
 --
 ALTER TABLE `Schedule`
-    ADD CONSTRAINT `fk_schedule_room` FOREIGN KEY (`id_room`) REFERENCES `Room` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `fk_schedule_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+    ADD CONSTRAINT `fk_schedule_room` FOREIGN KEY (`id_room`) REFERENCES `Room` (`id`) ON DELETE cascade ON UPDATE cascade ,
+    ADD CONSTRAINT `fk_schedule_subject` FOREIGN KEY (`id_subject`) REFERENCES `Subject` (`id`) ON DELETE cascade ON UPDATE cascade ;
 
 --
--- Omezení pro tabulku `Schedule-User`
+-- Omezenï¿½ pro tabulku `Schedule-User`
 --
 ALTER TABLE `Schedule-User`
-    ADD CONSTRAINT `fk_schedule_grade` FOREIGN KEY (`id_grade`) REFERENCES `Grade` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `fk_schedule_schedule` FOREIGN KEY (`id_schedule`) REFERENCES `Schedule` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `fk_schedule_user` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+    ADD CONSTRAINT `fk_schedule_grade` FOREIGN KEY (`id_grade`) REFERENCES `Grade` (`id`) ON DELETE cascade ON UPDATE cascade ,
+    ADD CONSTRAINT `fk_schedule_schedule` FOREIGN KEY (`id_schedule`) REFERENCES `Schedule` (`id`) ON DELETE cascade ON UPDATE cascade ,
+    ADD CONSTRAINT `fk_schedule_user` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE cascade ON UPDATE cascade ;
 
 alter table User
     add rememberme_hash varchar(250) null;
 
 
-insert into user (firstname, lastname, email, password, role) VALUES ("Tomáš", "Vondra", "admin", "admin", "admin");
+insert into user (firstname, lastname, email, password, role) VALUES ("Tomï¿½", "Vondra", "admin", "admin", "admin");
 
 COMMIT;
 

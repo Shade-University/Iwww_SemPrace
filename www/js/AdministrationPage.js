@@ -1,13 +1,4 @@
 $(document).ready(function(){
-    /* Overview page - toggle nav menu item */
-    /*--------------------------------------*/
-    $(".op-body .nav-menu a").click(function(e){
-        e.preventDefault();
-
-        $(".op-body .nav-menu a").removeClass("active");
-        $(this).addClass("active");
-    });
-
     /* Delete user from table functions */
     /*----------------------------------*/
     $(document).on( 'click', '*[data-modal-anchor]', function(){
@@ -19,19 +10,17 @@ $(document).ready(function(){
     /*---------------------------------*/
     $(document).on( 'click', '.hide-modal', function(){
         $(".modal-window").removeClass("show");
-        window.location = window.location.search.split('&')[0]; //Remove parameters from url (editUser)
+        var newUrl = window.location.search.substring(0,window.location.search.indexOf("&edit"));
+        if(newUrl !== "")
+            window.location = newUrl;        //Remove parameters from url (editUser)
     });
 
     //hide on click anywhere but on form in modal window (if you click on white field)
     $(document).on( 'click', '.layer-hide', function(){
         $(this).parent().removeClass("show");
-        window.location = window.location.search.split('&')[0]; //Remove parameters from url (editUser)
-    });
-
-    /* Input FILE trigger */
-    /*---------------------------------*/
-    $(document).on( 'click', '.import-data', function(e){
-        e.preventDefault();
+        var newUrl = window.location.search.substring(0,window.location.search.indexOf("&edit"));
+        if(newUrl !== "")
+            window.location = newUrl;
     });
 
     /* Toggle mobile nav icon & nav menu classes */
@@ -42,17 +31,17 @@ $(document).ready(function(){
     });
 });
 
-function searchUsers() {
+function searchTable(inputTarget, tableTarget, colId) {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("seachBar");
+    input = document.getElementById(inputTarget);
     filter = input.value.toUpperCase();
-    table = document.getElementById("userTable");
+    table = document.getElementById(tableTarget);
     tr = table.getElementsByTagName("tr");
 
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
+        td = tr[i].getElementsByTagName("td")[colId];
         if (td) {
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {

@@ -98,6 +98,9 @@
     color: #ffffff;
     padding: 7px 24px;
 }
+.overview-page .op-body .nav-col .nav-menu li #importForm {
+    margin: 0px;
+}
 .overview-page .op-body .nav-col .nav-menu li.sub-menu:hover .sm-box {
     opacity: 1;
 }
@@ -251,7 +254,7 @@
 .admin-page .content-col .control-row .search-form .search-btn button img {
     width: 80%;
 }
-.admin-page .content-col .control-row .btn-add-user {
+.admin-page .content-col .control-row .btn-add {
     font-size: 16px;
     color: #141414;
     background: rgba(0, 0, 0, 0);
@@ -260,7 +263,7 @@
     vertical-align: middle;
     position: relative;
 }
-.admin-page .content-col .control-row .btn-add-user:before {
+.admin-page .content-col .control-row .btn-add:before {
     content: "";
     position: absolute;
     height: 100%;
@@ -270,17 +273,17 @@
     width: 0;
     transition: 0.5s width;
 }
-.admin-page .content-col .control-row .btn-add-user:hover:before {
+.admin-page .content-col .control-row .btn-add:hover:before {
     width: 100%;
 }
 
-.admin-page .content-col .control-row .btn-add-user .icon {
+.admin-page .content-col .control-row .btn-add .icon {
     width: 30px;
     height: 30px;
     top: -3px;
     margin-right: 10px;
 }
-.admin-page .content-col .control-row .btn-add-user .icon:after {
+.admin-page .content-col .control-row .btn-add .icon:after {
     content: "";
     position: absolute;
     width: 100%;
@@ -290,7 +293,7 @@
     left: 0;
     background: #ffffff;
 }
-.admin-page .content-col .control-row .btn-add-user .icon:before {
+.admin-page .content-col .control-row .btn-add .icon:before {
     content: "+";
     position: absolute;
     font-size: 24px;
@@ -298,7 +301,7 @@
     top: 2px;
     z-index: 2;
 }
-.admin-page .content-col .control-row .btn-add-user span {
+.admin-page .content-col .control-row .btn-add span {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -385,31 +388,31 @@
     transform: translate(-50%, -50%);
     z-index: 10;
 }
-.modal-window .modal-box.edit-add-user {
+.modal-window .modal-box.edit-add {
     max-width: 760px;
     width: 90%;
     padding: 16px 20px;
     border: 1px solid #282828;
     background: #ffffff;
 }
-.modal-window .modal-box.edit-add-user p {
+.modal-window .modal-box.edit-add p {
     font-size: 18px;
     margin-top: 0;
     margin-bottom: 26px;
     display: block;
 }
-.modal-window .modal-box.edit-add-user .input-box {
+.modal-window .modal-box.edit-add .input-box {
     padding: 10px;
     flex: 0 0 33.3333%;
     max-width: 33.3333%;
 }
-.modal-window .modal-box.edit-add-user .input-box label {
+.modal-window .modal-box.edit-add .input-box label {
     font-size: 14px;
     color: #282828;
     margin-bottom: 6px;
     display: block;
 }
-.modal-window .modal-box.edit-add-user .input-box input, .modal-window .modal-box.edit-add-user .input-box select {
+.modal-window .modal-box.edit-add .input-box input, .modal-window .modal-box.edit-add .input-box select {
     border: none;
     font-size: 16px;
     color: #141414;
@@ -419,7 +422,7 @@
     background-color: #ebebeb;
     width: 100%;
 }
-.modal-window .modal-box.edit-add-user .input-box button {
+.modal-window .modal-box.edit-add .input-box button {
     outline: none;
     background-color: rgba(0, 0, 0, 0);
     transition: 0.2s background-color;
@@ -429,16 +432,16 @@
     color: #141414;
     width: 100%;
 }
-.modal-window .modal-box.edit-add-user .input-box button:hover {
+.modal-window .modal-box.edit-add .input-box button:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
 @media screen and (max-width: 768px) {
-    .modal-window .modal-box.edit-add-user .input-box {
+    .modal-window .modal-box.edit-add .input-box {
         flex: 0 0 50%;
         max-width: 50%;
     }
-    .modal-window .modal-box.edit-add-user .input-box.ib-placeholder {
+    .modal-window .modal-box.edit-add .input-box.ib-placeholder {
         display: none;
     }
 }
@@ -447,10 +450,10 @@
         max-height: 90vh;
         overflow-y: auto;
     }
-    .modal-window .modal-box.edit-add-user {
+    .modal-window .modal-box.edit-add {
         padding: 6px 16px;
     }
-    .modal-window .modal-box.edit-add-user .input-box {
+    .modal-window .modal-box.edit-add .input-box {
         padding: 10px 0px;
         flex: 0 0 100%;
         max-width: 100%;
