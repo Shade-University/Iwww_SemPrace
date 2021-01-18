@@ -28,18 +28,20 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         $stmt->execute();
     }
 
-    public function deleteScheduleUser($scheduleId)
+    public function deleteScheduleUser($id)
     {
         $stmt = $this->_db->prepare("DELETE FROM `Schedule-User` WHERE id = :id");
-        $stmt->bindParam(":id", $scheduleId);
-        $stmt->execute();    }
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+    }
 
-    public function getScheduleUserByScheduleId($scheduleId)
+    public function getScheduleUserById($id)
     {
         $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id = :id");
-        $stmt->bindParam(":id", $scheduleId);
+        $stmt->bindParam(":id", $id);
         $stmt->execute();
-        return $stmt->fetch();    }
+        return $stmt->fetch();
+    }
 
     public function updateScheduleUser($id, $scheduleId, $userId, $gradeId)
     {
@@ -52,5 +54,31 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         $stmt->bindParam(":id_user", $userId);
         $stmt->bindParam(":id_grade", $gradeId);
         $stmt->bindParam(":id", $id);
-        $stmt->execute();    }
+        $stmt->execute();
+    }
+
+    public function getUsersForSchedule($scheduleId)
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id_schedule = :id");
+        $stmt->bindParam(":id", $scheduleId);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getGradesForStudentAndSchedule($scheduleId, $studentId)
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id_schedule = :id AND id_user = :user_id");
+        $stmt->bindParam(":id", $scheduleId);
+        $stmt->bindParam(":user_id", $studentId);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function deleteByStudentAndSchedule($scheduleId, $studentId)
+    {
+        $stmt = $this->_db->prepare("DELETE FROM `Schedule-User` WHERE id_schedule = :id AND id_user = :user_id");
+        $stmt->bindParam(":id", $scheduleId);
+        $stmt->bindParam(":user_id", $studentId);
+        $stmt->execute();
+    }
 }

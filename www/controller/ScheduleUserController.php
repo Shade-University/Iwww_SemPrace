@@ -66,9 +66,9 @@ class ScheduleUserController
         $this->_scheduleUserDao->deleteScheduleUser($scheduleId);
     }
 
-    public function getScheduleUser($scheduleId)
+    public function getScheduleUser($id)
     {
-        return $this->_scheduleUserDao->getScheduleUserByScheduleId($scheduleId);
+        return $this->_scheduleUserDao->getScheduleUserById($id);
     }
 
     public function updateScheduleUser($data)
@@ -98,7 +98,6 @@ class ScheduleUserController
 
     private function validate($data, &$msg)
     {
-        print_r($data);
         if (empty($data['schedule'])
             ||
             empty($data['user'])) {

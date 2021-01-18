@@ -61,4 +61,12 @@ class ScheduleDaoImpl implements ScheduleDao
         $stmt->bindParam(":id", $id);
         $stmt->execute();
     }
+
+    public function getSchedulesBySubjectId($subjectId)
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM Schedule WHERE id_subject = :id ORDER BY lesson_start");
+        $stmt->bindParam(":id", $subjectId);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

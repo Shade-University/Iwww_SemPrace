@@ -21,6 +21,7 @@
     #Select right css file to page
     ?>
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/shared.js"></script>
 </head>
 
 <body>

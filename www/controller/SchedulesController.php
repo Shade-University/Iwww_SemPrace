@@ -121,6 +121,14 @@ class SchedulesController
             return false;
         }
 
+        $lessonStart = strtotime($data['lesson_start']);
+        $lessonEnd = strtotime($data['lesson_end']);
+        $hourDiff = ($lessonEnd - $lessonStart) / (60*60);
+        if($hourDiff <= 0 || $hourDiff > 4) {
+            $msg = "Schedule lesson should be last between 1-4 hours";
+            return false;
+        }
+
         return true;
     }
 

@@ -27,6 +27,7 @@ class GradeDaoImpl implements GradeDao
         $stmt->bindParam(":date", $now);
         $stmt->bindParam(":type", $type);
         $stmt->execute();
+        return $this->_db->lastInsertId();
     }
 
     public function deleteGrade($gradeId)
