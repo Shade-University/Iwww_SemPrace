@@ -11,7 +11,7 @@ class RoomDaoImpl implements RoomDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getAllRooms()
+    public function getAllRooms(): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM Room");
         $stmt->execute();
@@ -27,7 +27,7 @@ class RoomDaoImpl implements RoomDao
         $stmt->execute();
     }
 
-    public function deleteRoom($roomId)
+    public function deleteRoomById($roomId)
     {
         $stmt = $this->_db->prepare("DELETE FROM Room WHERE id = :id");
         $stmt->bindParam(":id", $roomId);

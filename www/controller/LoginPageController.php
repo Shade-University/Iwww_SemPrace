@@ -20,7 +20,7 @@ class LoginPageController
             "student" => "StudentPage");
     }
 
-    public function login($user, $password, $remember)
+    public function login($user, $password)
     {
         $dbUser = $this->_userService->login($user, $password);
         if ($dbUser == null) {
@@ -32,10 +32,9 @@ class LoginPageController
             $this->setRememberMe($dbUser);
         } else {
             $this->_userDao->updateRememberMe("", $dbUser['id']);
-            setcookie("remember", "", time() - 3600);
+            setcookie("remember", "", time() - 3600); //Remove rememberme cookie
         }
 
-        $this->setSession($dbUser);
         header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
     }
 
@@ -50,7 +49,7 @@ class LoginPageController
             $dbUser = $this->_userDao->getByRememberCookie($_COOKIE['remember']);
 
             if ($dbUser) {
-                $this->setSession($dbUser);
+                $this->_userService->setSession($dbUser);
                 header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
             }
         }
@@ -66,12 +65,5 @@ class LoginPageController
             $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
 
         $this->_userDao->updateRememberMe($cookiehash, $dbUser['id']);
-    }
-
-    private function setSession($dbUser)
-    {
-        $_SESSION['email'] = $dbUser['email'];
-        $_SESSION['fullname'] = $dbUser['firstname'] . " " . $dbUser['lastname'];
-        $_SESSION['role'] = $dbUser['role'];
     }
 }

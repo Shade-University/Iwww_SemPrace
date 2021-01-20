@@ -1,4 +1,3 @@
-
 .modal-window .modal-box.modal-students {
     max-width: 960px;
     width: 90%;
@@ -34,6 +33,11 @@
     max-width: 210px;
     padding-right: 20px;
 }
+.modal-window .modal-box.modal-students .student-list .col.col-100 {
+    flex: 1;
+    max-width: 100%;
+    padding-right: 0;
+}
 .modal-window .modal-box.modal-students .student-list .list {
     max-height: 400px;
     overflow-y: auto;
@@ -67,18 +71,21 @@
     color: #141414;
     font-weight: 400;
 }
-.modal-window .modal-box.modal-students .expell {
+.modal-window .modal-box.modal-students .student-list .grades .export-grades {
     position: absolute;
-    background-color: #e74c3c;
+    background-color: #27ae60;
     right: 10px;
     top: 10px;
     z-index: 2;
     color: #ffffff;
     padding: 6px 16px;
+    -moz-transition: 0.5s background-color;
+    -o-transition: 0.5s background-color;
+    -webkit-transition: 0.5s background-color;
     transition: 0.5s background-color;
 }
-.modal-window .modal-box.modal-students .student-list .grades .expell:hover {
-    background-color: #c0392b;
+.modal-window .modal-box.modal-students .student-list .grades .export-grades:hover {
+    background-color: #2ecc71;
 }
 .modal-window .modal-box.modal-students .student-list .grades .grade-box table {
     width: 100%;
@@ -106,6 +113,9 @@
     background-color: #141414;
     display: inline-block;
     padding: 6px 12px;
+    -moz-transition: 0.5s background-color;
+    -o-transition: 0.5s background-color;
+    -webkit-transition: 0.5s background-color;
     transition: 0.5s background-color;
 }
 .modal-window .modal-box.modal-students .student-list .grades .grade-box table .grade-btn:hover {
@@ -118,16 +128,12 @@
     background-color: #141414;
     display: inline-block;
     padding: 6px 12px;
+    -moz-transition: 0.5s background-color;
+    -o-transition: 0.5s background-color;
+    -webkit-transition: 0.5s background-color;
     transition: 0.5s background-color;
     text-align: center;
 }
 .modal-window .modal-box.modal-students .student-list .grades .grade-box .add-new-grade:hover {
     background-color: #565656;
-}
-
-.clickable-row {
-    cursor: pointer;
-}
-.clickable-row:hover {
-    border: 1px solid black;
 }

@@ -52,7 +52,7 @@ class SubjectsController
 
     public function deleteSubject($subjectId)
     {
-        $this->_subjectDao->deleteSubject($subjectId);
+        $this->_subjectDao->deleteSubjectById($subjectId);
     }
 
     public function getSubject($subjectId)
@@ -81,9 +81,11 @@ class SubjectsController
             return false;
         }
 
-        if($this->_subjectDao->getSubjectByName($data['name']) != null) {
-            $msg = "Subject with same name already exists";
-            return false;
+        if($data['action'] != "editSubject") {
+            if ($this->_subjectDao->getSubjectByName($data['name']) != null) {
+                $msg = "Subject with same name already exists";
+                return false;
+            }
         }
 
         return true;

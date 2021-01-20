@@ -12,15 +12,22 @@ class UserService
         $this->_userDao = $userDao;
     }
 
-    public function login($user, $password)
+    public function login($user, $password) : array
     {
         $user = $this->_userDao->getUserByCredentials($user, $password);
-        if ($user) {
+        if ($user != null) {
             $this->_user = $user;
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['role'] = $user['role'];
+            $this->setSession($user);
             return $user;
         }
-        return false;
+        return null;
+    }
+
+    public function setSession($dbUser)
+    {
+        $_SESSION['email'] = $dbUser['email'];
+        $_SESSION['fullname'] = $dbUser['firstname'] . " " . $dbUser['lastname'];
+        $_SESSION['role'] = $dbUser['role'];
+        $_SESSION['id'] = $dbUser['id'];
     }
 }

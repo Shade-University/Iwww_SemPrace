@@ -4,7 +4,7 @@ require_once './controller/AdministrationPageController.php';
 
     $controller = new AdministrationPageController();
 
-    if(!$_SESSION['email']) {
+    if(!$_SESSION['role'] || $_SESSION['role'] != "admin") {
         header("Location: ./index.php");
     }
 

@@ -11,11 +11,12 @@ class ScheduleDaoImpl implements ScheduleDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getAllSchedules()
+    public function getAllSchedules(): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM Schedule");
         $stmt->execute();
-        return $stmt->fetchAll();    }
+        return $stmt->fetchAll();
+    }
 
     public function insertSchedule($day, $lesson_start, $lesson_end, $subjectId, $roomId)
     {
@@ -29,7 +30,7 @@ class ScheduleDaoImpl implements ScheduleDao
         $stmt->execute();
     }
 
-    public function deleteSchedule($scheduleId)
+    public function deleteScheduleById($scheduleId)
     {
         $stmt = $this->_db->prepare("DELETE FROM Schedule WHERE id = :id");
         $stmt->bindParam(":id", $scheduleId);
@@ -62,7 +63,7 @@ class ScheduleDaoImpl implements ScheduleDao
         $stmt->execute();
     }
 
-    public function getSchedulesBySubjectId($subjectId)
+    public function getSchedulesBySubjectId($subjectId): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM Schedule WHERE id_subject = :id ORDER BY lesson_start");
         $stmt->bindParam(":id", $subjectId);

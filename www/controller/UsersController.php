@@ -55,7 +55,7 @@ class UsersController
 
     public function deleteUser($userId)
     {
-        $this->_userDao->deleteUser($userId);
+        $this->_userDao->deleteUserById($userId);
     }
 
     public function getUser($userId)

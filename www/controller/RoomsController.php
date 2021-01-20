@@ -52,7 +52,7 @@ class RoomsController
 
     public function deleteRoom($roomId)
     {
-        $this->_roomDao->deleteRoom($roomId);
+        $this->_roomDao->deleteRoomById($roomId);
     }
 
     public function getRoom($roomId)

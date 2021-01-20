@@ -12,7 +12,7 @@ class SubjectDaoImpl implements SubjectDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getAllSubjects()
+    public function getAllSubjects(): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM Subject");
         $stmt->execute();
@@ -28,7 +28,7 @@ class SubjectDaoImpl implements SubjectDao
         $stmt->execute();
     }
 
-    public function deleteSubject($subjectId)
+    public function deleteSubjectById($subjectId)
     {
         $stmt = $this->_db->prepare("DELETE FROM Subject WHERE id = :id");
         $stmt->bindParam(":id", $subjectId);

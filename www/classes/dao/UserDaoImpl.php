@@ -12,7 +12,7 @@ class UserDaoImpl implements UserDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getUserByCredentials($email, $password)
+    public function getUserByCredentials($email, $password)
     {
         $stmt = $this->_db->prepare("SELECT * FROM User WHERE email = :email AND password = :password");
         $stmt->bindParam(":email", $email);
@@ -21,7 +21,7 @@ class UserDaoImpl implements UserDao
         return $stmt->fetch();
     }
 
-    function updateRememberMe($hash, $id)
+    public function updateRememberMe($hash, $id)
     {
         $stmt = $this->_db->prepare("UPDATE User SET rememberme_hash = :hash WHERE id = :id");
         $stmt->bindParam(":hash", $hash);
@@ -29,7 +29,7 @@ class UserDaoImpl implements UserDao
         $stmt->execute();
     }
 
-    function getByRememberCookie($cookie)
+    public function getByRememberCookie($cookie)
     {
         $stmt = $this->_db->prepare("SELECT * FROM User WHERE rememberme_hash = :hash");
         $stmt->bindParam(":hash", $cookie);
@@ -37,14 +37,14 @@ class UserDaoImpl implements UserDao
         return $stmt->fetch();
     }
 
-    function getAllUsers()
+    public function getAllUsers(): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM User");
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    function insertUser($firstname, $lastname, $email, $password, $role)
+    public function insertUser($firstname, $lastname, $email, $password, $role)
     {
         $stmt = $this->_db->prepare("INSERT INTO User(firstname, lastname, email, password, role)
          VALUES(:firstname, :lastname, :email, :password, :role)");
@@ -56,14 +56,14 @@ class UserDaoImpl implements UserDao
         $stmt->execute();
     }
 
-    public function deleteUser($userId)
+    public function deleteUserById($userId)
     {
         $stmt = $this->_db->prepare("DELETE FROM User WHERE id = :id");
         $stmt->bindParam(":id", $userId);
         $stmt->execute();
     }
 
-    function updateUser($id, $firstname, $lastname, $email, $password, $role)
+    public function updateUser($id, $firstname, $lastname, $email, $password, $role)
     {
         $stmt = $this->_db->prepare("UPDATE User SET
                 firstname = :firstname,

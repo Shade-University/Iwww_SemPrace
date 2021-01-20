@@ -27,7 +27,7 @@ class ImportExportService
             }
 
         } catch (exception $e) {
-            Helpers::alert("Csv file invalid.\n " . $e);
+            Helpers::alert("Csv file is invalid.\n " . $e);
         } finally {
             fclose($csvFile);
         }
@@ -56,6 +56,8 @@ class ImportExportService
 
     private function validateUser($data)
     {
+        $validRoles = array("admin", "teacher", "student");
+
         if (empty($data[0])
             ||
             empty($data[1])
@@ -80,7 +82,7 @@ class ImportExportService
             return false;
         }
 
-        if ($data[4] != "admin" && $data[4] != "teacher" && $data[4] != "student") {
+        if (!in_array($data[4], $validRoles)) {
             return false;
         }
 

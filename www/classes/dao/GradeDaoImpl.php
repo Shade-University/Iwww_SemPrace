@@ -11,7 +11,7 @@ class GradeDaoImpl implements GradeDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getAllGrades()
+    public function getAllGrades(): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM Grade");
         $stmt->execute();
@@ -25,12 +25,12 @@ class GradeDaoImpl implements GradeDao
          VALUES(:grade, :date, :type)");
         $stmt->bindParam(":grade", $grade);
         $stmt->bindParam(":date", $now);
-        $stmt->bindParam(":type", $type);
+        $stmt->bindParam(":type", $type); //Type is task name/grade description.
         $stmt->execute();
-        return $this->_db->lastInsertId();
+        return $this->_db->lastInsertId(); //When teacher is creating grade, he also assign that grade to student, so we need last inserted grade
     }
 
-    public function deleteGrade($gradeId)
+    public function deleteGradeById($gradeId)
     {
         $stmt = $this->_db->prepare("DELETE FROM Grade WHERE id = :id");
         $stmt->bindParam(":id", $gradeId);

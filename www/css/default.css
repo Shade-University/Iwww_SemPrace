@@ -157,7 +157,7 @@ a {
     padding: 7px 24px;
 }
 .overview-page .op-body .content-col {
-    padding: 30px 40px;
+    padding: 2%;
 }
 .overview-page .op-body .content-col h2 {
     font-size: 40px;
@@ -502,4 +502,136 @@ a {
         flex: 0 0 100%;
         max-width: 100%;
     }
+}
+
+.admin-page .content-col .schedule {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    margin-top: 30px;
+    background: #ebebeb;
+    max-width: calc(100vw - 306px); /*100% window*/
+}
+.admin-page .content-col .schedule .schedule-inner {
+    padding: 16px;
+    width: 100%;
+    height: auto;
+    min-width: 1400px;
+}
+.admin-page .content-col .schedule .schedule-inner .sch-title {
+    font-size: 18px;
+    color: #141414;
+    margin: 0;
+    display: block;
+    font-weight: 400;
+}
+.admin-page .content-col .schedule .schedule-inner .sch-title span {
+    font-size: 26px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table {
+    display: block;
+    width: 1350px;
+    margin-top: 30px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head {
+    padding-bottom: 12px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head:nth-child(even), .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row:nth-child(even) {
+    background: #ffffff;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div {
+    position: relative;
+    text-align: center;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-1, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-1 {
+    flex: 0 0 90px;
+    max-width: 90px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-2, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-2 {
+    flex: 0 0 180px;
+    max-width: 180px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-3, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-3 {
+    flex: 0 0 270px;
+    max-width: 270px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-4, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-4 {
+    flex: 0 0 360px;
+    max-width: 360px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject {
+    color: #282828;
+    font-size: 18px;
+    padding-top: 30px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject span, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject span {
+    display: inline-block;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject .note, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject .note {
+    font-size: 12px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject.practice, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject.practice {
+    box-shadow: inset 0px 0px 0px 2px #2ecc71;
+    background: rgba(46, 204, 113, 0.1);
+    margin-left:45px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject.lecture, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject.lecture {
+    box-shadow: inset 0px 0px 0px 2px #141414;
+    background: rgba(20, 20, 20, 0.1);
+    margin-left:45px;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div .time-span, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div .time-span {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #141414;
+    display: block;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div .time-span:nth-of-type(1), .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div .time-span:nth-of-type(1) {
+    top: 0;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div .time-span:nth-of-type(2), .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div .time-span:nth-of-type(2) {
+    bottom: 0;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div .hour-id, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div .hour-id {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+    display: block;
+    color: #141414;
+}
+.admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div .day, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div .day {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 18px;
+    text-align: center;
+    display: block;
+    color: #141414;
+}
+@media screen and (max-width: 1024px) {
+    .admin-page .content-col .schedule {
+        max-width: 100%;
+    }
+}
+
+
+.admin-page .content-col .table-wrap table .register-box .view-btn {
+    margin-bottom: 10px;
+}
+.admin-page .content-col .table-wrap table .view-btn {
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #141414;
+    display: inline-block;
+    padding: 6px 16px;
+    transition: 0.5s background-color;
+}
+.admin-page .content-col .table-wrap table .view-btn:hover {
+    background-color: #525252;
+}
+.admin-page .content-col .table-wrap table .view-btn:not(:last-child) {
+    margin-right: 12px;
 }

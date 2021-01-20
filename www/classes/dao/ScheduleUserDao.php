@@ -3,13 +3,23 @@
 
 interface ScheduleUserDao
 {
-    function getAllScheduleUsers();
+    public function getAllScheduleUsers(): array;
+
     public function insertScheduleUser($scheduleId, $userId, $gradeId);
-    public function deleteScheduleUser($id);
+
+    public function deleteScheduleUserById($id);
+
     public function getScheduleUserById($id);
+
     public function updateScheduleUser($id, $scheduleId, $userId, $gradeId);
-    public function getUsersForSchedule($scheduleId);
-    public function deleteByStudentAndSchedule($scheduleId, $studentId);
-    public function getGradesForStudentAndSchedule($scheduleId, $studentId);
+
+    public function getScheduleUserByScheduleId($scheduleId): array;
+
+    public function deleteScheduleUserByScheduleIdAndUserId($scheduleId, $userId);
+
+    public function getScheduleUserByScheduleIdAndUserId($scheduleId, $userId): array;
+
+    public function getScheduleUserByUserId($userId): array;
+
 
 }

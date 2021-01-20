@@ -53,7 +53,7 @@ class GradesController
 
     public function deleteGrade($gradeId)
     {
-        $this->_gradeDao->deleteGrade($gradeId);
+        $this->_gradeDao->deleteGradeById($gradeId);
     }
 
     public function getGrade($gradeId)

@@ -61,7 +61,7 @@ class SchedulesController
 
     public function deleteSchedule($scheduleId)
     {
-        $this->_scheduleDao->deleteSchedule($scheduleId);
+        $this->_scheduleDao->deleteScheduleById($scheduleId);
     }
 
     public function getSchedule($scheduleId)

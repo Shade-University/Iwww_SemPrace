@@ -120,7 +120,7 @@ class TeacherPageController
 
     public function createStudentsListForSchedule($id)
     {
-        $students = array_unique($this->_scheduleUserDao->getUsersForSchedule($id), SORT_REGULAR);
+        $students = array_unique($this->_scheduleUserDao->getScheduleUserByScheduleId($id), SORT_REGULAR);
         $students = array_intersect_key($students, array_unique(array_map(function ($el) {
             return $el['id_user'];
         }, $students))); //Uniqueu user
@@ -154,7 +154,7 @@ class TeacherPageController
 
     public function deleteSubject($subjectId)
     {
-        $this->_subjectDao->deleteSubject($subjectId);
+        $this->_subjectDao->deleteSubjectById($subjectId);
     }
 
     public function getSubject($subjectId)
@@ -199,14 +199,14 @@ class TeacherPageController
 
     public function deleteSchedule($scheduleId)
     {
-        $this->_scheduleDao->deleteSchedule($scheduleId);
+        $this->_scheduleDao->deleteScheduleById($scheduleId);
     }
 
 
     public function createStudentGrades($studentId, $scheduleId)
     {
         $student = $this->_userDao->geUserById($studentId);
-        $studentGrades = $this->_scheduleUserDao->getGradesForStudentAndSchedule($scheduleId, $studentId);
+        $studentGrades = $this->_scheduleUserDao->getScheduleUserByScheduleIdAndUserId($scheduleId, $studentId);
         echo '<div class="col">
                         <div class="grades">';
         echo '<a href="?page=TeacherPage&view='
@@ -242,12 +242,12 @@ class TeacherPageController
 
     public function expellStudent($editSchedule, $expell)
     {
-        $this->_scheduleUserDao->deleteByStudentAndSchedule($editSchedule, $expell);
+        $this->_scheduleUserDao->deleteScheduleUserByScheduleIdAndUserId($editSchedule, $expell);
     }
 
     public function deleteGradeFromSchedule($id)
     {
-        $this->_scheduleUserDao->deleteScheduleUser($id);
+        $this->_scheduleUserDao->deleteScheduleUserById($id);
     }
 
     public function createGrade($data)

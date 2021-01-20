@@ -3,13 +3,19 @@
 
 interface UserDao
 {
-    function getUserByCredentials($email, $password);
-    function updateRememberMe($hash, $id);
-    function getByRememberCookie($cookie);
+    public function getUserByCredentials($email, $password);
 
-    function getAllUsers();
-    function insertUser($firstname, $lastname, $email, $password, $role);
-    function updateUser($id, $firstname, $lastname, $email, $password, $role);
+    public function updateRememberMe($hash, $id);
+
+    public function getByRememberCookie($cookie);
+
+    public function getAllUsers(): array;
+
+    public function insertUser($firstname, $lastname, $email, $password, $role);
+
+    public function updateUser($id, $firstname, $lastname, $email, $password, $role);
+
     public function geUserById($userId);
-    public function deleteUser($userId);
+
+    public function deleteUserById($userId);
 }

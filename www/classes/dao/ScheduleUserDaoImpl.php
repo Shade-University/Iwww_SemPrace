@@ -11,7 +11,7 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         $this->_db = Connection::getPdoInstance();
     }
 
-    function getAllScheduleUsers()
+    function getAllScheduleUsers(): array
     {
         $stmt = $this->_db->prepare('SELECT * FROM `Schedule-User`');
         $stmt->execute();
@@ -28,7 +28,7 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         $stmt->execute();
     }
 
-    public function deleteScheduleUser($id)
+    public function deleteScheduleUserById($id)
     {
         $stmt = $this->_db->prepare("DELETE FROM `Schedule-User` WHERE id = :id");
         $stmt->bindParam(":id", $id);
@@ -57,7 +57,7 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         $stmt->execute();
     }
 
-    public function getUsersForSchedule($scheduleId)
+    public function getScheduleUserByScheduleId($scheduleId): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id_schedule = :id");
         $stmt->bindParam(":id", $scheduleId);
@@ -65,20 +65,28 @@ class ScheduleUserDaoImpl implements ScheduleUserDao
         return $stmt->fetchAll();
     }
 
-    public function getGradesForStudentAndSchedule($scheduleId, $studentId)
+    public function getScheduleUserByScheduleIdAndUserId($scheduleId, $userId): array
     {
         $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id_schedule = :id AND id_user = :user_id");
         $stmt->bindParam(":id", $scheduleId);
-        $stmt->bindParam(":user_id", $studentId);
+        $stmt->bindParam(":user_id", $userId);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function deleteByStudentAndSchedule($scheduleId, $studentId)
+    public function deleteScheduleUserByScheduleIdAndUserId($scheduleId, $userId)
     {
         $stmt = $this->_db->prepare("DELETE FROM `Schedule-User` WHERE id_schedule = :id AND id_user = :user_id");
         $stmt->bindParam(":id", $scheduleId);
-        $stmt->bindParam(":user_id", $studentId);
+        $stmt->bindParam(":user_id", $userId);
         $stmt->execute();
+    }
+
+    public function getScheduleUserByUserId($userId): array
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM `Schedule-User` WHERE id_user = :user_id");
+        $stmt->bindParam(":user_id", $userId);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }
