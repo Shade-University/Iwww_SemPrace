@@ -5,6 +5,7 @@ require_once './classes/dao/ScheduleDaoImpl.php';
 require_once './classes/dao/ScheduleUserDaoImpl.php';
 require_once './classes/dao/UserDaoImpl.php';
 require_once './classes/dao/GradeDaoImpl.php';
+
 require_once './classes/Helpers.php';
 
 class TeacherPageController

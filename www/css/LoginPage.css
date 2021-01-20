@@ -16,7 +16,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    /* Zarovnej na střed */
+    /* To middle */
     padding: 32px 32px;
     background-color: rgba(255, 255, 255, 0.3);
     width: 600px;
@@ -25,11 +25,11 @@
 .login-page .login-form .col:nth-child(odd) {
     flex: 0 0 40%;
     max-width: 40%;
-} /* Sekce vlevo pouze 40% */
+} /* Left 40% */
 .login-page .login-form .col:nth-child(even) {
     flex: 0 0 60%;
     max-width: 60%;
-} /*Sekce vpravo zbytek 60% */
+} /* Right 60% */
 .login-page .custom-radio {
     display: inline-block;
     position: relative;
@@ -39,7 +39,7 @@
     color: #ffffff;
     font-size: 16px;
 }
-.login-page .custom-radio:not(:last-child) { /*kromě posledního */
+.login-page .custom-radio:not(:last-child) {
     margin-bottom: 20px;
 }
 .login-page input[type=radio] {
@@ -62,7 +62,7 @@
     margin-top: 72px;
 }
 
-.login-page input::placeholder {
+.login-page input::placeholder { /* pseudo element - change color of placeholder text in input */
     color: rgba(255, 255, 255, 0.5);
 }
 .login-page .input-group:not(:last-child) {
@@ -102,10 +102,6 @@
 }
 .login-page .submit-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
-}
-.login-page .submit-btn:hover:after {
-    width: 100%;
-    opacity: 1;
 }
 
 @media screen and (max-width: 600px) {

@@ -1,15 +1,18 @@
 <?php
-
-
 require_once './controller/LoginPageController.php';
 
 $controller = new LoginPageController();
 $controller->checkByRememberCookie();
 
-$wrong = false;
-if (isset($_POST['login'])) {
+if (isset($_POST['login'])) { //Probably every POST parameter should be tested with isset
         $controller->login($_POST['username'], $_POST['password'], $_POST['remember']);
 }
+
+if(isset($_GET['action']) && $_GET['action'] == "logout")
+{
+    $controller->logout();
+}
+
 ?>
 
 <div class="login-page">

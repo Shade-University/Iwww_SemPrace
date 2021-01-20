@@ -15,12 +15,13 @@ class LoginPageController
         $this->_userDao = new UserDaoImpl();
         $this->_userService = new UserService($this->_userDao);
 
-        $this->mapping = array("admin" => "AdministrationPage",
+        $this->mapping = array(
+            "admin" => "AdministrationPage",
             "teacher" => "TeacherPage",
             "student" => "StudentPage");
     }
 
-    public function login($user, $password)
+    public function login($user, $password, $remember)
     {
         $dbUser = $this->_userService->login($user, $password);
         if ($dbUser == null) {
@@ -28,14 +29,19 @@ class LoginPageController
             return;
         }
 
-        if ($_POST['remember'] == "on") {
-            $this->setRememberMe($dbUser);
+        if ($remember == "on") {
+            $this->_userService->setRememberMe();
         } else {
-            $this->_userDao->updateRememberMe("", $dbUser['id']);
-            setcookie("remember", "", time() - 3600); //Remove rememberme cookie
+            $this->_userService->unsetRememberMe();
         }
 
         header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
+    }
+
+    public function logout()
+    {
+        $this->_userService->logout();
+        header("Location: index.php");
     }
 
     public function renderError()
@@ -45,25 +51,13 @@ class LoginPageController
 
     public function checkByRememberCookie()
     {
-        if ($_COOKIE['remember']) {
-            $dbUser = $this->_userDao->getByRememberCookie($_COOKIE['remember']);
+        if (isset($_COOKIE['remember'])) {
+            $dbUser = $this->_userService->loginByRememberMe($_COOKIE['remember']);
 
             if ($dbUser) {
-                $this->_userService->setSession($dbUser);
                 header('Location: index.php?page=' . $this->mapping[$dbUser['role']]);
             }
         }
     }
 
-    private function setRememberMe($dbUser)
-    {
-        $cookiehash = md5(sha1($dbUser['email'] . $_SERVER['REMOTE_ADDR'])); //something generated
-        $params = session_get_cookie_params();
-        setcookie("remember",
-            $cookiehash,
-            time() + 60 * 60 * 24 * 30,
-            $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
-
-        $this->_userDao->updateRememberMe($cookiehash, $dbUser['id']);
-    }
 }

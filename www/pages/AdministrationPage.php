@@ -16,7 +16,7 @@ require_once './controller/AdministrationPageController.php';
 <div class="overview-page admin-page">
     <section class="op-body flex-box">
         <div class="col nav-col">
-            <a class="logout-user" href="./classes/logout.php">
+            <a class="logout-user" href="?action=logout">
                 <img src="./img/logout.svg" alt="Log out">
                 <span>Log Out</span>
             </a>
