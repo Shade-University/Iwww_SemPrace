@@ -6,6 +6,10 @@ require_once './classes/dao/ScheduleUserDaoImpl.php';
 require_once './classes/dao/UserDaoImpl.php';
 require_once './classes/dao/GradeDaoImpl.php';
 
+require_once './classes/validators/GradeValidator.php';
+require_once './classes/validators/ScheduleValidator.php';
+require_once './classes/validators/SubjectValidator.php';
+
 require_once './classes/Helpers.php';
 
 class TeacherPageController
@@ -17,6 +21,10 @@ class TeacherPageController
     protected $_userDao;
     protected $_gradesDao;
 
+    protected $_gradeValidator;
+    protected $_subjectValidator;
+    protected $_scheduleValidator;
+
     public function __construct()
     {
         $this->_subjectDao = new SubjectDaoImpl();
@@ -25,6 +33,10 @@ class TeacherPageController
         $this->_scheduleUserDao = new ScheduleUserDaoImpl();
         $this->_userDao = new UserDaoImpl();
         $this->_gradesDao = new GradeDaoImpl();
+
+        $this->_gradeValidator = new GradeValidator();
+        $this->_scheduleValidator = new ScheduleValidator($this->_subjectDao, $this->_roomDao);
+        $this->_subjectValidator = new SubjectValidator($this->_subjectDao);
     }
 
     public function createSubjectTable()
@@ -46,14 +58,14 @@ class TeacherPageController
             echo '<td>' . $subject['description'] . '</td>';
 
             echo '<td>
-                         <a href="?page=TeacherPage&addSchedule=' . $subject['id'] . '" class="view-btn" data-modal-anchor="create-schedule">Create schedule</a>
+                     <a href="?page=TeacherPage&addSchedule=' . $subject['id']
+                . '" class="view-btn" data-modal-anchor="create-schedule">Create schedule</a>
                   </td>';
 
             echo '<td><a href="index.php?page=TeacherPage&deleteSubject=' . $subject['id'] . '" class="action-btn ab-delete" data-tooltip="Delete"
                         data-modal-anchor="delete-subject"><img src="./img/delete.svg" alt="Delete"></a>
                   <a href="index.php?page=TeacherPage&editSubject=' . $subject['id'] . '" class="action-btn ab-edit" data-tooltip="Edit" data-modal-anchor="subject-user">
                         <img src="./img/edit.svg" alt="Edit"></a></td>';
-
             echo '</tr>';
         }
 
@@ -98,34 +110,35 @@ class TeacherPageController
             echo '<div class="col-1" ><span class="day">' . $day . '</span ></div>';
             foreach ($hours as $hour) {
                 $filtered = null;
-                $filtered = array_values(array_filter($schedules, function ($element) use ($hour, $day) {
-                    $startTime = substr($element['lesson_start'], 0, -3); //From 12:00:00 format to 12:00
-                    return $startTime === $hour && $element['day'] === $day;
-                }));
+                foreach ($schedules as $schedule) {
+                    if (Helpers::convertDbTime($schedule['lesson_start']) === $hour && $schedule['day'] === $day) {
+                        $filtered = $schedule;
+                        break;
+                    }
+                }
 
                 if ($filtered != null) {
-                    $start = strtotime($filtered[0]['lesson_start']);
-                    $end = strtotime($filtered[0]['lesson_end']);
-                    $hourDiff = ($end - $start) / (60 * 60);
+                    $start = strtotime($filtered['lesson_start']);
+                    $end = strtotime($filtered['lesson_end']);
+                    $hourDiff = ($end - $start) / (60 * 60); //Get time diff in hours which will be used as col-size
                     echo '<div class="col-' . $hourDiff . ' col-subject practice">';
                     echo '<a href="?page=TeacherPage&view=' . $subject['id'] .
-                        '&editSchedule=' . $filtered[0]['id'] . '" class="line-overflow">' . $subject['name'] . '</a ></div>';
+                        '&editSchedule=' . $filtered['id'] . '" class="line-overflow">' . $subject['name'] . '</a ></div>';
                 } else {
-                    echo '<div class="col-1"><span></span></div>';
-                } //Check if schedule for this date exists, calculte how long and draw. Otherwise empty div
+                    echo '<div class="col-1"><span></span></div>'; //If no schedule, empty col
+                }
             }
             echo '</div>';
         }
-        echo '</div>';
+        echo '</div></div>';
     }
 
-    public function createStudentsListForSchedule($id)
+    public function createStudentsListForSchedule($scheduleId)
     {
-        $students = array_unique($this->_scheduleUserDao->getScheduleUserByScheduleId($id), SORT_REGULAR);
+        $students = array_unique($this->_scheduleUserDao->getScheduleUserByScheduleId($scheduleId), SORT_REGULAR);
         $students = array_intersect_key($students, array_unique(array_map(function ($el) {
             return $el['id_user'];
-        }, $students))); //Uniqueu user
-
+        }, $students))); //return only uniques users
 
         echo '<div class="student-list flex-box">
                     <div class="col">
@@ -143,67 +156,6 @@ class TeacherPageController
 
     }
 
-    public function createSubject($data)
-    {
-        $errorMsg = "";
-        if ($this->validateSubject($data, $errorMsg)) {
-            $this->_subjectDao->insertSubject($data['name'], $data['description']);
-        } else {
-            Helpers::alert($errorMsg);
-        }
-    }
-
-    public function deleteSubject($subjectId)
-    {
-        $this->_subjectDao->deleteSubjectById($subjectId);
-    }
-
-    public function getSubject($subjectId)
-    {
-        return $this->_subjectDao->getSubjectById($subjectId);
-    }
-
-    public function updateSubject($data)
-    {
-        $errorMsg = "";
-        if ($this->validateSubject($data, $errorMsg)) {
-            $this->_subjectDao->updateSubject($data['id'], $data['name'], $data['description']);
-        } else {
-            Helpers::alert($errorMsg);
-        }
-    }
-
-    public function getAllSubjects()
-    {
-        return $this->_subjectDao->getAllSubjects();
-    }
-
-    public function getAllRooms()
-    {
-        return $this->_roomDao->getAllRooms();
-    }
-
-    public function createSchedule($data)
-    {
-        $errorMsg = "";
-        if ($this->validateSchedule($data, $errorMsg)) {
-            $this->_scheduleDao->insertSchedule($data['day'], $data['lesson_start'], $data['lesson_end'], $data['subject'], $data['room']);
-        } else {
-            Helpers::alert($errorMsg);
-        }
-    }
-
-    public function getSchedule($editSchedule)
-    {
-        return $this->_scheduleDao->getScheduleById($editSchedule);
-    }
-
-    public function deleteSchedule($scheduleId)
-    {
-        $this->_scheduleDao->deleteScheduleById($scheduleId);
-    }
-
-
     public function createStudentGrades($studentId, $scheduleId)
     {
         $student = $this->_userDao->geUserById($studentId);
@@ -213,6 +165,7 @@ class TeacherPageController
         echo '<a href="?page=TeacherPage&view='
             . $_GET['view'] . '&editSchedule=' . $_GET['editSchedule'] . '&student=' . $_GET['student'] .
             '&expell=' . $student['id'] . '"class="expell" data-modal-anchor="expell-student">Expell the student</a>';
+        //Build expell student url from GET parameters
 
         echo '<p>Name: <span>' . $student['firstname'] . ' ' . $student['lastname'] . '</span>';
         echo '</br></br>Grades:</p>
@@ -225,25 +178,70 @@ class TeacherPageController
                                         <th>Actions</th>
                                     </tr>
                                 ';
+        //Header
+
         foreach ($studentGrades as $studentGrade) {
             $grade = $this->_gradesDao->getGradeById($studentGrade['id_grade']);
-            if($grade != null) {
+            if ($grade != null) {
                 echo '<tr><td>' . $grade['type'] . '</td><td>' . $grade['grade'] . '</td>';
                 echo '<td><a href="' . $_SERVER['REQUEST_URI'] . '&removeGrade=' . $studentGrade['id'] . '">Delete</a></td></tr>';
+                //Build url to remove grade without losing get parameters
             }
         }
-        echo '</table>
-                            </div>
-                        </div>
-                    </div>
-                </div>';
-
-
+        echo '    </table>
+                </div>
+              </div>
+             </div>
+            </div>';
     }
 
-    public function expellStudent($editSchedule, $expell)
+    public function createRoomOptions()
     {
-        $this->_scheduleUserDao->deleteScheduleUserByScheduleIdAndUserId($editSchedule, $expell);
+        foreach ($this->_roomDao->getAllRooms() as $room) {
+            echo '<option value="' . $room['id'] . '"';
+            echo '>' . $room['name'] . '</option>';
+        }
+    }
+
+    public function createSubject($data)
+    {
+        $errorMsg = "";
+        if ($this->_subjectValidator->validate($data, $errorMsg)) {
+            $this->_subjectDao->insertSubject($data['name'], $data['description']);
+        } else {
+            Helpers::alert($errorMsg);
+        }
+    }
+
+    public function createSchedule($data)
+    {
+        $errorMsg = "";
+        if ($this->_scheduleValidator->validate($data, $errorMsg)) {
+            $this->_scheduleDao->insertSchedule($data['day'], $data['lesson_start'], $data['lesson_end'], $data['subject'], $data['room']);
+        } else {
+            Helpers::alert($errorMsg);
+        }
+    }
+
+    public function createGrade($data)
+    {
+        $errorMsg = "";
+        if ($this->_gradeValidator->validate($data, $errorMsg)) {
+            $id = $this->_gradesDao->insertGrade($data['grade'], $data['type']);
+            $this->_scheduleUserDao->insertScheduleUser($data['schedule'], $data['student'], $id);
+        } else {
+            Helpers::alert($errorMsg);
+        }
+    }
+
+    public function deleteSubject($subjectId)
+{
+    $this->_subjectDao->deleteSubjectById($subjectId);
+}
+
+    public function deleteSchedule($scheduleId)
+    {
+        $this->_scheduleDao->deleteScheduleById($scheduleId);
     }
 
     public function deleteGradeFromSchedule($id)
@@ -251,101 +249,32 @@ class TeacherPageController
         $this->_scheduleUserDao->deleteScheduleUserById($id);
     }
 
-    public function createGrade($data)
+    public function getSubject($subjectId)
+    {
+        return $this->_subjectDao->getSubjectById($subjectId);
+    }
+
+    public function updateSubject($data)
     {
         $errorMsg = "";
-        if ($this->validateGrade($data, $errorMsg)) {
-            $id = $this->_gradesDao->insertGrade($data['grade'], $data['type']);
-            $this->_scheduleUserDao->insertScheduleUser($data['schedule'], $data['student'], $id);
+        if ($this->_subjectValidator->validate($data, $errorMsg)) {
+            $this->_subjectDao->updateSubject($data['id'], $data['name'], $data['description']);
         } else {
             Helpers::alert($errorMsg);
         }
-
-
     }
 
-    private function validateGrade($data, &$msg)
+    public function getSchedule($editSchedule)
     {
-        if (empty($data['grade']) ||
-            empty($data['type'])) {
-            $msg = "Grade or type cannot be empty";
-            return false;
-        }
-
-        if ($data['grade'] != "A"
-            && $data['grade'] != "B"
-            && $data['grade'] != "C"
-            && $data['grade'] != "D"
-            && $data['grade'] != "E"
-            && $data['grade'] != "F") {
-            $msg = "Grade can be only A/B/C/D/E/F";
-            return false;
-        }
-
-        return true;
+        return $this->_scheduleDao->getScheduleById($editSchedule);
     }
 
-    private function validateSubject($data, &$msg)
+    public function expellStudent($editSchedule, $expell)
     {
-        if (empty($data['name'])) {
-            $msg = "Subject name cannot be empty";
-            return false;
-        } else if (strlen($data['name']) > 250
-            || strlen($data['description']) > 500) {
-            $msg = "Max size exceeded";
-            return false;
-        }
-
-        if($data['action'] != "editSubject") {
-            if ($this->_subjectDao->getSubjectByName($data['name']) != null) {
-                $msg = "Subject with same name already exists";
-                return false;
-            }
-        }
-
-        return true;
+        $this->_scheduleUserDao->deleteScheduleUserByScheduleIdAndUserId($editSchedule, $expell);
     }
 
-    private function validateSchedule($data, &$msg)
-    {
-        if (empty($data['day'])
-            || empty($data['lesson_start'])
-            || empty($data['lesson_end'])
-            || empty($data['subject'])
-            || empty($data['room'])) {
-            $msg = "Data cannot be empty";
-            return false;
-        }
 
-        if ($data['day'] != "Monday"
-            && $data['day'] != "Tuesday"
-            && $data['day'] != "Wednesday"
-            && $data['day'] != "Thursday"
-            && $data['day'] != "Friday") {
-            $msg = "Invalid day";
-            return false;
-        }
 
-        if ($this->_subjectDao->getSubjectById($data['subject']) == null
-            || $this->_roomDao->getRoomById($data['room']) == null) {
-            $msg = "Invalid data";
-            return false;
-        }
 
-        if (!preg_match("/^[0-9]{2}:[0-9]{2}$/", $data['lesson_start'])
-            || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $data['lesson_end'])) {
-            $msg = "Dates are not in correct format";
-            return false;
-        }
-
-        $lessonStart = strtotime($data['lesson_start']);
-        $lessonEnd = strtotime($data['lesson_end']);
-        $hourDiff = ($lessonEnd - $lessonStart) / (60 * 60);
-        if ($hourDiff <= 0 || $hourDiff > 4) {
-            $msg = "Schedule lesson should be last between 1-4 hours";
-            return false;
-        }
-
-        return true;
-    }
 }

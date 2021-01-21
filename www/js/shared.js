@@ -15,7 +15,7 @@ $(document).ready(function () {
         var newUrl = url.substring(0, url.indexOf(lastParameter));
         if (newUrl !== "")
             window.location = newUrl; //Remove parameters from url (editUser)
-
+        //TODO This is really bad algorithm to remove last get parameter
     });
 
     //hide on click anywhere but on form in modal window (if you click on white field)
@@ -26,7 +26,7 @@ $(document).ready(function () {
         var newUrl = url.substring(0, url.indexOf(lastParameter));
         if (newUrl !== "")
             window.location = newUrl; //Remove parameters from url (editUser)
-
+        //TODO This is really bad algorithm to remove last get parameter
     });
 
     /* Toggle mobile nav icon & nav menu classes */

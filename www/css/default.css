@@ -573,7 +573,6 @@ a {
 .admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject.practice, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject.practice {
     box-shadow: inset 0px 0px 0px 2px #2ecc71;
     background: rgba(46, 204, 113, 0.1);
-    margin-left:45px;
 }
 .admin-page .content-col .schedule .schedule-inner .schedule-table .st-head div.col-subject.lecture, .admin-page .content-col .schedule .schedule-inner .schedule-table .st-row div.col-subject.lecture {
     box-shadow: inset 0px 0px 0px 2px #141414;
