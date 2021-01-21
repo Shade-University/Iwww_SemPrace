@@ -1,5 +1,6 @@
 <?php
-require './classes/dao/UserDaoImpl.php';
+require_once './classes/dao/UserDaoImpl.php';
+
 define("EXPORT_FILENAME", "export.csv");
 define("DELIMETER", ";");
 
@@ -8,6 +9,7 @@ define("DELIMETER", ";");
 class ImportExportService
 {
     protected $_userDao;
+
     public function __construct(UserDao $userDao)
     {
         $this->_userDao = $userDao;
@@ -25,9 +27,8 @@ class ImportExportService
                     throw new Exception("Validation failed");
                 }
             }
-
         } catch (exception $e) {
-            Helpers::alert("Csv file is invalid.\n " . $e);
+            Helpers::alert("Csv file is invalid.");
         } finally {
             fclose($csvFile);
         }
@@ -42,7 +43,6 @@ class ImportExportService
 
         foreach ($this->_userDao->getAllUsers() as $user) {
             $row = "";
-
             for ($i = 1; $i < 5; $i++) { //Skip id and rememberme hash (first and last)
                 $row .= $user[$i] . DELIMETER;
             }
@@ -87,6 +87,10 @@ class ImportExportService
         }
 
         if (strpos($data[2], "@") == false) { //Regex would be better
+            return false;
+        }
+
+        if($this->_userDao->getUserByEmail($data[2]) != null) {
             return false;
         }
 

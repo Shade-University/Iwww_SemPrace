@@ -1,6 +1,7 @@
 <?php
 require_once './classes/dao/SubjectDao.php';
 require_once './classes/dao/RoomDao.php';
+require_once './classes/validators/Validator.php';
 
 class ScheduleValidator implements Validator
 {
@@ -15,6 +16,8 @@ class ScheduleValidator implements Validator
 
     public function validate($data, &$msg): bool
     {
+        $validDays = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+
         if (empty($data['day'])
             || empty($data['lesson_start'])
             || empty($data['lesson_end'])
@@ -24,11 +27,7 @@ class ScheduleValidator implements Validator
             return false;
         }
 
-        if ($data['day'] != "Monday"
-            && $data['day'] != "Tuesday"
-            && $data['day'] != "Wednesday"
-            && $data['day'] != "Thursday"
-            && $data['day'] != "Friday") {
+        if (!in_array($data['day'], $validDays)) {
             $msg = "Invalid day";
             return false;
         }

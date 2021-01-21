@@ -3,10 +3,10 @@ require_once './controller/SubjectsController.php';
 
 $controller = new SubjectsController();
 
-if($_GET['deleteSubject']) {
+if (isset($_GET['deleteSubject'])) {
     $controller->deleteSubject($_GET['deleteSubject']);
     header("Location: index.php?page=AdministrationPage&crud=Subjects"); //To remove get parameter
-} elseif ($_GET['editSubject']) {
+} elseif (isset($_GET['editSubject'])) {
     $editSubject = $controller->getSubject($_GET['editSubject']); //Parameter removed in javascript on modal close
 }
 
@@ -24,7 +24,8 @@ if($_POST['action'] == "addSubject") {
         <div class="search-form-wrap">
             <form class="search-form flex-box">
                 <div class="input-box">
-                    <input id="subjectSearchBar" type="search" placeholder="Search" name="Search" onkeyup="searchTable('subjectSearchBar', 'subjectsTable', 1)">
+                    <input id="subjectSearchBar" type="search" placeholder="Search" name="Search"
+                           onkeyup="searchTable('subjectSearchBar', 'subjectsTable', 1)">
                 </div>
                 <div class="search-btn">
                     <button><img src="./img/search.svg" alt="Search icon"></button>
@@ -41,25 +42,27 @@ if($_POST['action'] == "addSubject") {
     </div>
 </div>
 
-<div class="modal-window <? if ($_GET['editSubject']) echo 'show'; ?>">
+<div class="modal-window <? if (isset($_GET['editSubject'])) echo 'show'; ?>">
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Edit subject: <strong><? echo $editSubject['id'] ?></strong></p>
-        <form id="editSubjectForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Subjects">
+        <form id="editSubjectForm" class="edit-form flex-box" method="post"
+              action="?page=AdministrationPage&crud=Subjects">
             <input type="hidden" name="id" value="<? echo $editSubject['id'] ?>">
             <div class="input-box">
                 <label for="name">name</label>
-                <input type="text" name="name" placeholder="Name *" required
+                <input type="text" name="name" id="name" placeholder="Name *" required
                        value="<? echo $editSubject['name'] ?>">
             </div>
             <div class="input-box">
                 <label for="description">Description *</label>
-                <input type="text" name="description" placeholder="Description *" value="<? echo $editSubject['description'] ?>">
+                <input type="text" id="description" name="description" placeholder="Description *"
+                       value="<? echo $editSubject['description'] ?>">
             </div>
             <input type="hidden" value="editSubject" name="action">
             <div class="input-box ib-placeholder"></div>
             <div class="input-box">
-                <button type="submit" form="editSubjectForm" >Save</button>
+                <button type="submit" form="editSubjectForm">Save</button>
             </div>
             <div class="input-box">
                 <button type="reset" class="hide-modal">Storno</button>
@@ -72,14 +75,14 @@ if($_POST['action'] == "addSubject") {
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Create subject</p>
-        <form id="createSubjectForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Subjects">
+        <form id="createSubjectForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage&crud=Subjects">
             <div class="input-box">
                 <label for="name">Name *</label>
-                <input type="text" name="name" placeholder="Name *" required>
+                <input type="text" id="name" name="name" placeholder="Name *" required>
             </div>
             <div class="input-box">
                 <label for="description">Description *</label>
-                <input type="text" name="description" placeholder="Description *">
+                <input type="text" id="description" name="description" placeholder="Description *">
             </div>
             <div class="input-box ib-placeholder"></div>
             <input type="hidden" name="action" value="addSubject">

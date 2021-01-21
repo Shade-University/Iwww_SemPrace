@@ -4,7 +4,7 @@ require_once './controller/AdministrationPageController.php';
 
     $controller = new AdministrationPageController();
 
-    if(!$_SESSION['role'] || $_SESSION['role'] != "admin") {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
         header("Location: ./index.php");
     }
 
@@ -22,21 +22,26 @@ require_once './controller/AdministrationPageController.php';
             </a>
             <div class="logged-user">
                 <p>User:</p>
-                <h3 class="line-overflow" title="<?php echo $_SESSION['fullname'] ?>"><?php echo $_SESSION['fullname'] ?></h3>
+                <h3 class="line-overflow"><?php echo $_SESSION['fullname'] ?></h3>
             </div>
 
             <ul class="nav-menu">
-                <li><a href="?page=AdministrationPage" class="nav-item <? if(!$_GET['crud'] || $_GET['crud'] == "Users") echo "active" ?>"><span>Users</span></a></li>
+                <li><a href="?page=AdministrationPage"
+                       class="nav-item <? if (!isset($_GET['crud']) || $_GET['crud'] == "Users") echo "active" ?>"><span>Users</span></a>
+                </li>
                 <li>
                     <form id="importForm" method="post" enctype="multipart/form-data">
-                        <input id="file-input" type="file" onchange="document.getElementById('importForm').submit();" name="importFile" accept=".csv" style="display: none;" />
-                        <a type="submit" class="nav-item import-data" onclick="document.getElementById('file-input').click();"><span>Import users</span></a>
+                        <input id="file-input" type="file" onchange="document.getElementById('importForm').submit();"
+                               name="importFile" accept=".csv" style="display: none;"/>
+                        <a type="submit" class="nav-item import-data"
+                           onclick="document.getElementById('file-input').click();"><span>Import users</span></a>
                     </form>
 
                 </li>
                 <li><a href="exportFile.php" class="nav-item"><span>Export users</span></a></li>
                 <li class="sub-menu">
-                    <a href="#" class="nav-item <? if($_GET['crud'] && $_GET['crud'] != "Users") echo "active" ?>"><span>CRUD</span></a>
+                    <a href="#"
+                       class="nav-item <? if (isset($_GET['crud']) && $_GET['crud'] != "Users") echo "active" ?>"><span>CRUD</span></a>
                     <div class="sm-box">
                         <a href="?page=AdministrationPage&crud=Subjects">Subjects</a>
                         <a href="?page=AdministrationPage&crud=Rooms">Rooms</a>
@@ -63,7 +68,5 @@ require_once './controller/AdministrationPageController.php';
             ?>
         </div>
     </section>
-
-
 </div>
 <script type="text/javascript" src="./js/AdministrationPage.js"></script>

@@ -4,6 +4,7 @@ require_once './classes/dao/ScheduleDaoImpl.php';
 require_once './classes/dao/UserDaoImpl.php';
 require_once './classes/dao/GradeDaoImpl.php';
 require_once './classes/dao/ScheduleUserDaoImpl.php';
+require_once './classes/validators/ScheduleUserValidator.php';
 
 class ScheduleUserController
 {
@@ -11,6 +12,7 @@ class ScheduleUserController
     protected $_userDao;
     protected $_gradeDao;
     protected $_scheduleUserDao;
+    protected $_scheduleUserValidator;
 
     public function __construct()
     {
@@ -18,6 +20,8 @@ class ScheduleUserController
         $this->_userDao = new UserDaoImpl();
         $this->_gradeDao = new GradeDaoImpl();
         $this->_scheduleUserDao = new ScheduleUserDaoImpl();
+
+        $this->_scheduleUserValidator = new ScheduleUserValidator($this->_userDao, $this->_scheduleDao, $this->_gradeDao);
     }
 
     public function createScheduleUserTable()
@@ -33,10 +37,10 @@ class ScheduleUserController
         echo '</tr>';
 
         foreach ($scheduleUsers as $schedule) {
+            $user = $this->_userDao->getUserById($schedule['id_user']);
             echo '<tr>';
             echo '<td>' . $schedule['id'] . '</td>';
             echo '<td>' . $schedule['id_schedule'] . '</td>';
-            $user = $this->_userDao->geUserById($schedule['id_user']);
             echo '<td>' . $user['firstname'] . " " . $user['lastname'] . '</td>';
             echo '<td>' . $this->_gradeDao->getGradeById($schedule['id_grade'])['grade'] . '</td>';
 
@@ -48,13 +52,13 @@ class ScheduleUserController
             echo '</tr>';
         }
 
-        echo '</table';
+        echo '</table>';
     }
 
     public function createScheduleUser($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_scheduleUserValidator->validate($data, $errorMsg)) {
             $this->_scheduleUserDao->insertScheduleUser($data['schedule'], $data['user'], $data['grade'] != "" ? $data['grade'] : null);
         } else {
             Helpers::alert($errorMsg);
@@ -74,7 +78,7 @@ class ScheduleUserController
     public function updateScheduleUser($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_scheduleUserValidator->validate($data, $errorMsg)) {
             $this->_scheduleUserDao->updateScheduleUser($data['id'], $data['schedule'], $data['user'], $data['grade'] != "" ? $data['grade'] : null);
         } else {
             Helpers::alert($errorMsg);
@@ -95,31 +99,4 @@ class ScheduleUserController
     {
         return $this->_gradeDao->getAllGrades();
     }
-
-    private function validate($data, &$msg)
-    {
-        if (empty($data['schedule'])
-            ||
-            empty($data['user'])) {
-            $msg = "Schedule and user must be filled in";
-            return false;
-        }
-
-        if (!is_numeric($data['schedule']) || !is_numeric($data['user'])
-            || (!empty($data['grade']) && !is_numeric($data['grade']))) {
-            $msg = "Data not valid";
-            return false;
-        }
-
-        if ($this->_scheduleDao->getScheduleById($data['schedule']) == null
-        ||
-        $this->_userDao->geUserById($data['user']) == null)
-        {
-            $msg = "Schedule or user do not exists";
-            return false;
-        }
-
-        return true;
-    }
-
 }

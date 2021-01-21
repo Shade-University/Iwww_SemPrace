@@ -4,4 +4,4 @@ require_once './classes/dao/UserDaoImpl.php';
 
 $service = new ImportExportService(new UserDaoImpl());
 
-$service->exportUsers();
+$service->exportUsers(); //Must be in solo file to prevent index.php writing to output

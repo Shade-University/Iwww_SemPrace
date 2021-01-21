@@ -3,10 +3,10 @@ require_once './controller/ScheduleUserController.php';
 
 $controller = new ScheduleUserController();
 
-if($_GET['deleteScheduleUser']) {
+if (isset($_GET['deleteScheduleUser'])) {
     $controller->deleteScheduleUser($_GET['deleteScheduleUser']);
     header("Location: index.php?page=AdministrationPage&crud=ScheduleUser"); //To remove get parameter
-} elseif ($_GET['editScheduleUser']) {
+} elseif (isset($_GET['editScheduleUser'])) {
     $editScheduleUser = $controller->getScheduleUser($_GET['editScheduleUser']); //Parameter removed in javascript on modal close
 }
 
@@ -24,7 +24,10 @@ if($_POST['action'] == "addScheduleUser") {
         <div class="search-form-wrap">
             <form class="search-form flex-box">
                 <div class="input-box">
-                    <input id="scheduleUserSearchBar" type="search" placeholder="Search" name="Search" onkeyup="searchTable('scheduleUserSearchBar', 'scheduleUserTable', 1)">
+                    <label>
+                        <input id="scheduleUserSearchBar" type="search" placeholder="Search" name="Search"
+                               onkeyup="searchTable('scheduleUserSearchBar', 'scheduleUserTable', 1)">
+                    </label>
                 </div>
                 <div class="search-btn">
                     <button><img src="./img/search.svg" alt="Search icon"></button>
@@ -41,27 +44,30 @@ if($_POST['action'] == "addScheduleUser") {
     </div>
 </div>
 
-<div class="modal-window <? if ($_GET['editScheduleUser']) echo 'show'; ?>">
+<div class="modal-window <? if (isset($_GET['editScheduleUser'])) echo 'show'; ?>">
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Edit schedule-user: <strong><? echo $editScheduleUser['id'] ?></strong></p>
-        <form id="editScheduleUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=ScheduleUser">
+        <form id="editScheduleUserForm" class="edit-form flex-box" method="post"
+              action="?page=AdministrationPage&crud=ScheduleUser">
             <input type="hidden" name="id" value="<? echo $editScheduleUser['id'] ?>">
             <div class="input-box">
                 <label for="schedule">Schedule</label>
-                <select name="schedule">
+                <select name="schedule" id="schedule">
                     <?
                     foreach ($controller->getAllSchedules() as $schedule) {
                         echo "<option value=\"" . $schedule['id'] . "\"";
                         if ($editScheduleUser['id_schedule'] == $schedule['id']) echo 'selected';
-                        echo ">" . $schedule['id'] . "</option>";
+                        echo ">" . $schedule['day'] . ' ' .
+                            Helpers::convertDbTime($schedule['lesson_start']) . ' - ' . Helpers::convertDbTime($schedule['lesson_end'])
+                            . "</option>";
                     }
                     ?>
                 </select>
             </div>
             <div class="input-box">
                 <label for="user">User</label>
-                <select name="user">
+                <select name="user" id="user">
                     <?
                     foreach ($controller->getAllUsers() as $user) {
                         echo "<option value=\"" . $user['id'] . "\"";
@@ -73,7 +79,7 @@ if($_POST['action'] == "addScheduleUser") {
             </div>
             <div class="input-box">
                 <label for="grade">Grade</label>
-                <select name="grade">
+                <select name="grade" id="grade">
                     <?
                     foreach ($controller->getAllGrades() as $grade) {
                         echo "<option value=\"" . $grade['id'] . "\"";
@@ -100,10 +106,11 @@ if($_POST['action'] == "addScheduleUser") {
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Create schedule-user</p>
-        <form id="createScheduleUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=ScheduleUser">
+        <form id="createScheduleUserForm" class="edit-form flex-box" method="post"
+              action="?page=AdministrationPage&crud=ScheduleUser">
             <div class="input-box">
                 <label for="schedule">Schedule</label>
-                <select name="schedule">
+                <select name="schedule" id="schedule">
                     <?
                     foreach ($controller->getAllSchedules() as $schedule) {
                         echo "<option value=\"" . $schedule['id'] . "\"";
@@ -114,7 +121,7 @@ if($_POST['action'] == "addScheduleUser") {
             </div>
             <div class="input-box">
                 <label for="user">User</label>
-                <select name="user">
+                <select name="user" id="user">
                     <?
                     foreach ($controller->getAllUsers() as $user) {
                         echo "<option value=\"" . $user['id'] . "\"";
@@ -125,7 +132,7 @@ if($_POST['action'] == "addScheduleUser") {
             </div>
             <div class="input-box">
                 <label for="grade">Grade</label>
-                <select name="grade">
+                <select name="grade" id="grade">
                     <?
                     foreach ($controller->getAllGrades() as $grade) {
                         echo "<option value=\"" . $grade['id'] . "\"";

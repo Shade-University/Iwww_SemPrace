@@ -1,14 +1,17 @@
 <?php
 require_once './classes/Helpers.php';
 require_once './classes/dao/RoomDaoImpl.php';
+require_once  './classes/validators/RoomValidator.php';
 
 class RoomsController
 {
     protected $_roomDao;
+    protected $_roomValidator;
 
     public function __construct()
     {
         $this->_roomDao = new RoomDaoImpl();
+        $this->_roomValidator = new RoomValidator();
     }
 
     public function createRoomTable()
@@ -37,13 +40,13 @@ class RoomsController
             echo '</tr>';
         }
 
-        echo '</table';
+        echo '</table>';
     }
 
     public function createRoom($data)
     {
         $errorMsg = "";
-        if($this->validate($data, $errorMsg)) {
+        if($this->_roomValidator->validate($data, $errorMsg)) {
             $this->_roomDao->insertRoom($data['name'], $data['capacity']);
         } else {
             Helpers::alert($errorMsg);
@@ -63,30 +66,11 @@ class RoomsController
     public function updateRoom($data)
     {
         $errorMsg = "";
-        if($this->validate($data, $errorMsg))
+        if($this->_roomValidator->validate($data, $errorMsg))
         {
             $this->_roomDao->updateRoom($data['id'], $data['name'], $data['capacity']);
         } else {
             Helpers::alert($errorMsg);
         }
     }
-
-    private function validate($data, &$msg)
-    {
-        if(empty($data['name']) ||
-            empty($data['capacity'])) {
-            $msg = "Cannot be empty";
-            return false;
-        }
-        if(!is_numeric($data['capacity'])) {
-            $msg = "Capacity must be number";
-            return false;
-        }
-
-        return true;
-    }
-
-
-
-
 }

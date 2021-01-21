@@ -1,14 +1,17 @@
 <?php
 require_once './classes/Helpers.php';
 require_once './classes/dao/GradeDaoImpl.php';
+require_once './classes/validators/GradeValidator.php';
 
 class GradesController
 {
     protected $_gradeDao;
+    protected $_gradeValidator;
 
     public function __construct()
     {
         $this->_gradeDao = new GradeDaoImpl();
+        $this->_gradeValidator = new GradeValidator();
     }
 
     public function createGradeTable()
@@ -38,13 +41,13 @@ class GradesController
             echo '</tr>';
         }
 
-        echo '</table';
+        echo '</table>';
     }
 
     public function createGrade($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_gradeValidator->validate($data, $errorMsg)) {
             $this->_gradeDao->insertGrade($data['grade'], $data['type']);
         } else {
             Helpers::alert($errorMsg);
@@ -64,33 +67,10 @@ class GradesController
     public function updateGrade($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_gradeValidator->validate($data, $errorMsg)) {
             $this->_gradeDao->updateGrade($data['id'], $data['grade'], $data['type']);
         } else {
             Helpers::alert($errorMsg);
         }
     }
-
-    private function validate($data, &$msg)
-    {
-        if (empty($data['grade']) ||
-            empty($data['type'])) {
-            $msg = "Grade or type cannot be empty";
-            return false;
-        }
-
-        if ($data['grade'] != "A"
-            && $data['grade'] != "B"
-            && $data['grade'] != "C"
-            && $data['grade'] != "D"
-            && $data['grade'] != "E"
-            && $data['grade'] != "F") {
-            $msg = "Grade can be only A/B/C/D/E/F";
-            return false;
-        }
-
-        return true;
-    }
-
-
 }

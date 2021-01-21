@@ -3,10 +3,10 @@ require_once './controller/RoomsController.php';
 
 $controller = new RoomsController();
 
-if($_GET['deleteRoom']) {
+if (isset($_GET['deleteRoom'])) {
     $controller->deleteRoom($_GET['deleteRoom']);
     header("Location: index.php?page=AdministrationPage&crud=Rooms"); //To remove get parameter
-} elseif ($_GET['editRoom']) {
+} elseif (isset($_GET['editRoom'])) {
     $editRoom = $controller->getRoom($_GET['editRoom']); //Parameter removed in javascript on modal close
 }
 
@@ -24,7 +24,10 @@ if($_POST['action'] == "addRoom") {
         <div class="search-form-wrap">
             <form class="search-form flex-box">
                 <div class="input-box">
-                    <input id="roomsSearchBar" type="search" placeholder="Search" name="Search" onkeyup="searchTable('roomsSearchBar', 'roomsTable', 1)">
+                    <label>
+                        <input id="roomsSearchBar" type="search" placeholder="Search" name="Search"
+                               onkeyup="searchTable('roomsSearchBar', 'roomsTable', 1)">
+                    </label>
                 </div>
                 <div class="search-btn">
                     <button><img src="./img/search.svg" alt="Search icon"></button>
@@ -41,20 +44,20 @@ if($_POST['action'] == "addRoom") {
     </div>
 </div>
 
-<div class="modal-window <? if ($_GET['editRoom']) echo 'show'; ?>">
+<div class="modal-window <? if (isset($_GET['editRoom'])) echo 'show'; ?>">
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Edit room: <strong><? echo $editRoom['id'] ?></strong></p>
-        <form id="editRoomForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Rooms">
+        <form id="editRoomForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage&crud=Rooms">
             <input type="hidden" name="id" value="<? echo $editRoom['id'] ?>">
             <div class="input-box">
                 <label for="name">Name</label>
-                <input type="text" name="name" placeholder="Room name *" required
+                <input type="text" name="name" id="name" placeholder="Room name *" required
                        value="<? echo $editRoom['name'] ?>">
             </div>
             <div class="input-box">
                 <label for="capacity">Capacity</label>
-                <input type="text" name="capacity" placeholder="Room capacity *" required pattern="[0-9]*"
+                <input type="text" id="capacity" name="capacity" placeholder="Room capacity *" required pattern="[0-9]*"
                        value="<? echo $editRoom['capacity'] ?>">
             </div>
             <input type="hidden" value="editRoom" name="action">
@@ -73,14 +76,15 @@ if($_POST['action'] == "addRoom") {
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Create room</p>
-        <form id="createRoomForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Rooms">
+        <form id="createRoomForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage&crud=Rooms">
             <div class="input-box">
                 <label for="name">Name</label>
-                <input type="text" name="name" placeholder="Room name *" required>
+                <input type="text" name="name" id="name" placeholder="Room name *" required>
             </div>
             <div class="input-box">
                 <label for="capacity">Capacity</label>
-                <input type="text" name="capacity" placeholder="Room capacity *" required pattern="[0-9]*">
+                <input type="text" id="capacity" name="capacity" placeholder="Room capacity *" required
+                       pattern="[0-9]*">
             </div>
             <div class="input-box ib-placeholder"></div>
             <input type="hidden" name="action" value="addRoom">

@@ -1,5 +1,6 @@
 <?php
 require_once './classes/dao/SubjectDao.php';
+require_once './classes/validators/Validator.php';
 
 class SubjectValidator implements Validator
 {

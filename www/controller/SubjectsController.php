@@ -1,14 +1,17 @@
 <?php
 require_once './classes/Helpers.php';
 require_once './classes/dao/SubjectDaoImpl.php';
+require_once  './classes/validators/SubjectValidator.php';
 
 class SubjectsController
 {
     protected $_subjectDao;
+    protected $_subjectValidator;
 
     public function __construct()
     {
         $this->_subjectDao = new SubjectDaoImpl();
+        $this->_subjectValidator = new SubjectValidator($this->_subjectDao);
     }
 
     public function createSubjectTable()
@@ -33,17 +36,16 @@ class SubjectsController
                         data-modal-anchor="delete-subject"><img src="./img/delete.svg" alt="Delete"></a>
                   <a href="index.php?page=AdministrationPage&crud=Subjects&editSubject=' . $subject['id'] . '" class="action-btn ab-edit" data-tooltip="Edit" data-modal-anchor="subject-user">
                         <img src="./img/edit.svg" alt="Edit"></a></td>';
-
             echo '</tr>';
         }
 
-        echo '</table';
+        echo '</table>';
     }
 
     public function createSubject($data)
     {
         $errorMsg = "";
-        if ($this->validateSubject($data, $errorMsg)) {
+        if ($this->_subjectValidator->validate($data, $errorMsg)) {
             $this->_subjectDao->insertSubject($data['name'], $data['description']);
         } else {
             Helpers::alert($errorMsg);
@@ -63,33 +65,10 @@ class SubjectsController
     public function updateSubject($data)
     {
         $errorMsg = "";
-        if ($this->validateSubject($data, $errorMsg)) {
+        if ($this->_subjectValidator->validate($data, $errorMsg)) {
             $this->_subjectDao->updateSubject($data['id'], $data['name'], $data['description']);
         } else {
             Helpers::alert($errorMsg);
         }
     }
-
-    private function validateSubject($data, &$msg)
-    {
-        if (empty($data['name'])) {
-            $msg = "Subject name cannot be empty";
-            return false;
-        } else if (strlen($data['name']) > 250
-            || strlen($data['description']) > 500) {
-            $msg = "Max size exceeded";
-            return false;
-        }
-
-        if($data['action'] != "editSubject") {
-            if ($this->_subjectDao->getSubjectByName($data['name']) != null) {
-                $msg = "Subject with same name already exists";
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
 }

@@ -144,7 +144,7 @@ class TeacherPageController
                     <div class="col">
                         <div class="list">';
         foreach ($students as $student) {
-            $user = $this->_userDao->geUserById($student['id_user']);
+            $user = $this->_userDao->getUserById($student['id_user']);
             $url = '?page=TeacherPage&view='
                 . $_GET['view'] . '&editSchedule=' . $_GET['editSchedule'];
             echo '<a href="' . $url . '&student=' . $user['id'] . '" class="item ';
@@ -158,7 +158,7 @@ class TeacherPageController
 
     public function createStudentGrades($studentId, $scheduleId)
     {
-        $student = $this->_userDao->geUserById($studentId);
+        $student = $this->_userDao->getUserById($studentId);
         $studentGrades = $this->_scheduleUserDao->getScheduleUserByScheduleIdAndUserId($scheduleId, $studentId);
         echo '<div class="col">
                         <div class="grades">';

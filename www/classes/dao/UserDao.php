@@ -15,7 +15,9 @@ interface UserDao
 
     public function updateUser($id, $firstname, $lastname, $email, $password, $role);
 
-    public function geUserById($userId);
+    public function getUserById($userId);
 
     public function deleteUserById($userId);
+
+    public function getUserByEmail($email);
 }

@@ -81,10 +81,18 @@ class UserDaoImpl implements UserDao
         $stmt->execute();
     }
 
-    public function geUserById($userId)
+    public function getUserById($userId)
     {
         $stmt = $this->_db->prepare("SELECT * FROM User WHERE id = :id");
         $stmt->bindParam(":id", $userId);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function getUserByEmail($email)
+    {
+        $stmt = $this->_db->prepare("SELECT * FROM User WHERE email = :email");
+        $stmt->bindParam(":email", $email);
         $stmt->execute();
         return $stmt->fetch();
     }

@@ -3,10 +3,10 @@ require_once './controller/GradesController.php';
 
 $controller = new GradesController();
 
-if($_GET['deleteGrade']) {
+if (isset($_GET['deleteGrade'])) {
     $controller->deleteGrade($_GET['deleteGrade']);
     header("Location: index.php?page=AdministrationPage&crud=Grades"); //To remove get parameter
-} elseif ($_GET['editGrade']) {
+} elseif (isset($_GET['editGrade'])) {
     $editGrade = $controller->getGrade($_GET['editGrade']); //Parameter removed in javascript on modal close
 }
 
@@ -24,7 +24,8 @@ if($_POST['action'] == "addGrade") {
         <div class="search-form-wrap">
             <form class="search-form flex-box">
                 <div class="input-box">
-                    <input id="gradesSearchBar" type="search" placeholder="Search" name="Search" onkeyup="searchTable('gradesSearchBar', 'gradesTable', 1)">
+                    <input id="gradesSearchBar" type="search" placeholder="Search" name="Search"
+                           onkeyup="searchTable('gradesSearchBar', 'gradesTable', 1)">
                 </div>
                 <div class="search-btn">
                     <button><img src="./img/search.svg" alt="Search icon"></button>
@@ -41,30 +42,31 @@ if($_POST['action'] == "addGrade") {
     </div>
 </div>
 
-<div class="modal-window <? if ($_GET['editGrade']) echo 'show'; ?>">
+<div class="modal-window <? if (isset($_GET['editGrade'])) echo 'show'; ?>">
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Edit grade: <strong><? echo $editGrade['id'] ?></strong></p>
-        <form id="editGradeForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Grades">
+        <form id="editGradeForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage&crud=Grades">
             <input type="hidden" name="id" value="<? echo $editGrade['id'] ?>">
             <div class="input-box">
-                <label for="name">Grade</label>
-                <input type="text" name="grade" placeholder="A/B/C/D/E/F *" pattern="[ABCDEF]"
+                <label for="grade">Grade</label>
+                <input type="text" name="grade" id="grade" placeholder="A/B/C/D/E/F *" pattern="[ABCDEF]"
                        value="<? echo $editGrade['grade'] ?>">
             </div>
             <div class="input-box">
                 <label for="date_created">Date created *</label>
-                <input type="date" name="date_created" disabled value="<? echo $editGrade['date_created'] ?>">
+                <input type="date" id="date_created" name="date_created" disabled
+                       value="<? echo $editGrade['date_created'] ?>">
             </div>
             <div class="input-box">
                 <label for="type">Type</label>
-                <input type="text" name="type" placeholder="Type *" required
+                <input type="text" id="type" name="type" placeholder="Type *" required
                        value="<? echo $editGrade['type'] ?>">
             </div>
             <input type="hidden" value="editGrade" name="action">
             <div class="input-box ib-placeholder"></div>
             <div class="input-box">
-                <button type="submit" form="editGradeForm" >Save</button>
+                <button type="submit" form="editGradeForm">Save</button>
             </div>
             <div class="input-box">
                 <button type="reset" class="hide-modal">Storno</button>
@@ -77,14 +79,15 @@ if($_POST['action'] == "addGrade") {
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Create grade</p>
-        <form id="createGradeForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage&crud=Grades">
+        <form id="createGradeForm" class="edit-form flex-box" method="post"
+              action="?page=AdministrationPage&crud=Grades">
             <div class="input-box">
                 <label for="grade">Grade</label>
-                <input type="text" name="grade" placeholder="A/B/C/D/E/F *" required pattern="[ABCDEF]">
+                <input type="text" id="grade" name="grade" placeholder="A/B/C/D/E/F *" required pattern="[ABCDEF]">
             </div>
             <div class="input-box">
                 <label for="type">Type</label>
-                <input type="text" name="type" placeholder="Type *" required>
+                <input type="text" id="type" name="type" placeholder="Type *" required>
             </div>
             <div class="input-box ib-placeholder"></div>
             <input type="hidden" name="action" value="addGrade">

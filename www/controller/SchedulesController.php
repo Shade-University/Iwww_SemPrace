@@ -4,17 +4,21 @@ require_once './classes/dao/ScheduleDaoImpl.php';
 require_once './classes/dao/RoomDaoImpl.php';
 require_once './classes/dao/SubjectDaoImpl.php';
 
+require_once './classes/validators/ScheduleValidator.php';
+
 class SchedulesController
 {
     protected $_scheduleDao;
     protected $_roomDao;
     protected $_subjectDao;
+    protected $_scheduleValidator;
 
     public function __construct()
     {
         $this->_scheduleDao = new ScheduleDaoImpl();
         $this->_roomDao = new RoomDaoImpl();
         $this->_subjectDao = new SubjectDaoImpl();
+        $this->_scheduleValidator = new ScheduleValidator($this->_subjectDao, $this->_roomDao);
     }
 
     public function createScheduleTable()
@@ -46,13 +50,13 @@ class SchedulesController
             echo '</tr>';
         }
 
-        echo '</table';
+        echo '</table>';
     }
 
     public function createSchedule($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_scheduleValidator->validate($data, $errorMsg)) {
             $this->_scheduleDao->insertSchedule($data['day'], $data['lesson_start'], $data['lesson_end'], $data['subject'], $data['room']);
         } else {
             Helpers::alert($errorMsg);
@@ -72,7 +76,7 @@ class SchedulesController
     public function updateSchedule($data)
     {
         $errorMsg = "";
-        if ($this->validate($data, $errorMsg)) {
+        if ($this->_scheduleValidator->validate($data, $errorMsg)) {
             $this->_scheduleDao->updateSchedule($data['id'], $data['day'], $data['lesson_start'], $data['lesson_end'], $data['subject'], $data['room']);
         } else {
             Helpers::alert($errorMsg);
@@ -88,50 +92,4 @@ class SchedulesController
     {
         return $this->_roomDao->getAllRooms();
     }
-
-    private function validate($data, &$msg)
-    {
-        if (empty($data['day'])
-            || empty($data['lesson_start'])
-            || empty($data['lesson_end'])
-            || empty($data['subject'])
-            || empty($data['room'])) {
-            $msg = "Data cannot be empty";
-            return false;
-        }
-
-        if ($data['day'] != "Monday"
-            && $data['day'] != "Tuesday"
-            && $data['day'] != "Wednesday"
-            && $data['day'] != "Thursday"
-            && $data['day'] != "Friday") {
-            $msg = "Invalid day";
-            return false;
-        }
-
-        if ($this->_subjectDao->getSubjectById($data['subject']) == null
-            || $this->_roomDao->getRoomById($data['room']) == null) {
-            $msg = "Invalid data";
-            return false;
-        }
-
-        if (!preg_match("/^[0-9]{2}:[0-9]{2}$/", $data['lesson_start'])
-            || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $data['lesson_end'])) {
-            $msg = "Dates are not in correct format";
-            return false;
-        }
-
-        $lessonStart = strtotime($data['lesson_start']);
-        $lessonEnd = strtotime($data['lesson_end']);
-        $hourDiff = ($lessonEnd - $lessonStart) / (60*60);
-        if($hourDiff <= 0 || $hourDiff > 4) {
-            $msg = "Schedule lesson should be last between 1-4 hours";
-            return false;
-        }
-
-        return true;
-    }
-
 }
-
-;

@@ -1,11 +1,12 @@
 <?php
 require_once './controller/UsersController.php';
+
 $controller = new UsersController();
 
-if ($_GET['deleteUser']) {
+if (isset($_GET['deleteUser'])) {
     $controller->deleteUser($_GET['deleteUser']);
     header("Location: index.php?page=AdministrationPage"); //To remove get parameter
-} elseif ($_GET['editUser']) {
+} elseif (isset($_GET['editUser'])) {
     $editUser = $controller->getUser($_GET['editUser']); //Parameter removed in javascript on modal close
 }
 
@@ -23,8 +24,10 @@ if($_POST['action'] == "addUser") {
         <div class="search-form-wrap">
             <form class="search-form flex-box">
                 <div class="input-box">
-                    <input id="searchBar" type="search" placeholder="Search" name="Search"
-                           onkeyup="searchTable('searchBar', 'usersTable', 2)">
+                    <label>
+                        <input id="searchBar" type="search" placeholder="Search" name="Search"
+                               onkeyup="searchTable('searchBar', 'usersTable', 2)">
+                    </label>
                 </div>
                 <div class="search-btn">
                     <button><img src="./img/search.svg" alt="Search icon"></button>
@@ -41,32 +44,35 @@ if($_POST['action'] == "addUser") {
     </div>
 </div>
 
-<div class="modal-window <? if ($_GET['editUser']) echo 'show'; ?>">
+<div class="modal-window <? if (isset($_GET['editUser'])) echo 'show'; ?>">
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Edit user: <strong><? echo $editUser['id'] ?></strong></p>
-        <form id="editUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage">
+        <form id="editUserForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage">
             <input type="hidden" name="id" value="<? echo $editUser['id'] ?>">
             <div class="input-box">
-                <label for="First name">First name *</label>
-                <input type="text" name="firstname" placeholder="First name *" required
+                <label for="firstname">First name *</label>
+                <input type="text" name="firstname" id="firstname" placeholder="First name *" required
                        value="<? echo $editUser['firstname'] ?>">
             </div>
             <div class="input-box">
-                <label for="Last name">Last name *</label>
-                <input type="text" name="lastname" placeholder="Last name *" required value="<? echo $editUser['lastname'] ?>">
+                <label for="lastname">Last name *</label>
+                <input type="text" name="lastname" id="lastname" placeholder="Last name *" required
+                       value="<? echo $editUser['lastname'] ?>">
             </div>
             <div class="input-box">
-                <label for="Email">Email *</label>
-                <input type="email" name="email" placeholder="Email *" required value="<? echo $editUser['email'] ?>">
+                <label for="email">Email *</label>
+                <input type="email" name="email" id="email" placeholder="Email *" required
+                       value="<? echo $editUser['email'] ?>">
             </div>
             <div class="input-box">
                 <label for="password">Password *</label>
-                <input type="text" name="password" placeholder="Password *" required value="<? echo $editUser['password'] ?>">
+                <input type="text" name="password" id="password" placeholder="Password *" required
+                       value="<? echo $editUser['password'] ?>">
             </div>
             <div class="input-box">
                 <label for="role">Role</label>
-                <select name="role">
+                <select name="role" id="role">
                     <option value="admin" <? if ($editUser['role'] == "admin") echo 'selected'; ?>>Administrator
                     </option>
                     <option value="teacher" <? if ($editUser['role'] == "teacher") echo 'selected'; ?>>Teacher</option>
@@ -76,7 +82,7 @@ if($_POST['action'] == "addUser") {
             <input type="hidden" value="editUser" name="action">
             <div class="input-box ib-placeholder"></div>
             <div class="input-box">
-                <button type="submit" form="editUserForm" >Save</button>
+                <button type="submit" form="editUserForm">Save</button>
             </div>
             <div class="input-box">
                 <button type="reset" class="hide-modal">Storno</button>
@@ -89,26 +95,26 @@ if($_POST['action'] == "addUser") {
     <div class="layer-hide"></div>
     <div class="modal-box edit-add">
         <p>Create user</p>
-        <form id="createUserForm" class="edit-form flex-box" method="post" action="index.php?page=AdministrationPage">
+        <form id="createUserForm" class="edit-form flex-box" method="post" action="?page=AdministrationPage">
             <div class="input-box">
                 <label for="firstname">First name *</label>
-                <input type="text" name="firstname" placeholder="First name *" required>
+                <input type="text" name="firstname" id="firstname" placeholder="First name *" required>
             </div>
             <div class="input-box">
                 <label for="lastname">Last name *</label>
-                <input type="text" name="lastname" placeholder="Last name *" required>
+                <input type="text" name="lastname" id="lastname" placeholder="Last name *" required>
             </div>
             <div class="input-box">
-                <label for="Email">Email *</label>
-                <input type="email" name="email" placeholder="Email *" required">
+                <label for="email">Email *</label>
+                <input type="email" name="email" id="email" placeholder="Email *" required">
             </div>
             <div class="input-box">
                 <label for="password">Password</label>
-                <input type="text" name="password" placeholder="Password" required>
+                <input type="text" name="password" id="password" placeholder="Password" required>
             </div>
             <div class="input-box">
                 <label for="role">Role</label>
-                <select name="role">
+                <select name="role" id="role">
                     <option value="admin">Administrator</option>
                     <option value="teacher">Teacher</option>
                     <option value="student">Student</option>
