@@ -96,10 +96,10 @@ class StudentPageController
         foreach ($days as $day) {
             echo '<div class="st-row flex-box" > ';
             echo '<div class="col-1" ><span class="day"> ' . $day . '</span></div>';
-            foreach ($hours as $hour) {
+            for ($i = 0; $i < count($hours); $i++) {
                 $filtered = null;
                 foreach ($schedules as $schedule) {
-                    if (Helpers::convertDbTime($schedule['lesson_start']) === $hour && $schedule['day'] === $day)
+                    if (Helpers::convertDbTime($schedule['lesson_start']) === $hours[$i] && $schedule['day'] === $day)
                     {
                         $filtered = $schedule;
                         break;
@@ -109,6 +109,7 @@ class StudentPageController
                     $start = strtotime($filtered['lesson_start']);
                     $end = strtotime($filtered['lesson_end']);
                     $hourDiff = ($end - $start) / (60 * 60); //Get time diff in hours which will be used as col-size
+                    $i += $hourDiff - 1;
                     $subject = $this->_subjectDao->getSubjectById($filtered['id_subject']);
                     echo '<div class="col-' . $hourDiff . ' col-subject practice">';
                     echo '<a href="?page=StudentPage&editSchedule=' . $filtered['id'] . '" class="line-overflow" > ' . $subject['name'] . ' </a></div >';
